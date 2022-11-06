@@ -1,0 +1,11 @@
+clf,clearvars;
+x1 = 4*ones(100);
+y1 = linspace(0,10,100);
+plot(x1,y1)
+hold on
+x2 = linspace(0,10,100);
+y2 = 6*ones(100);
+plot(x2,y2);hol
+x3 = linspace(0,10,100);
+y3 = 1/2 .*(18-3.*x3);
+plot(x3,y3)
