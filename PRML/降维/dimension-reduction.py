@@ -222,17 +222,19 @@ def sample_test(sample_num, random_state=0):
     fig = plt.figure()
     ax = fig.add_subplot(121, projection='3d')
     ax.scatter(X[:, 0], X[:, 1], X[:, 2], c=t)
-    iso = ISOMAP(2, 10)
-    dist_matrix = iso.distance_matrix(X)
-    X_new = iso.train(dist_matrix, X)
+    # iso = ISOMAP(2, 10)
+    # dist_matrix = iso.distance_matrix(X)
+    # X_new = iso.train(dist_matrix, X)
     # le = LE(2, 20)
     # dist_matrix = le.distance_matrix(X)
     # X_new = le.train(dist_matrix, X, gamma=4)
+    # pca = PCA(2)
+    # X_new = pca.train(X, kernel="gaussian", coef=4)
+
     ax = fig.add_subplot(122)
     ax.scatter(X_new[:, 0], X_new[:, 1], c=t)
     ax.xaxis.set_major_formatter(NullFormatter())
     ax.yaxis.set_major_formatter(NullFormatter())
-    plt.axis('tight')
     plt.show()
 
     # data = datasets.make_s_curve(sample_num, random_state=random_state)
@@ -255,5 +257,5 @@ def sample_test(sample_num, random_state=0):
 
 
 if __name__ == "__main__":
-    n = 1000
+    n = 500
     sample_test(n)
