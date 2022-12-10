@@ -11,7 +11,7 @@ import logging
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=logging.DEBUG)
 
-dataset = "msr"
+dataset = "mrs"
 PATH = f"./Corpus/{dataset}"
 Corpus_Training_PATH = PATH + f"/{dataset}_training.utf8"
 Corpus_Test_PATH = PATH + f"/{dataset}_test.utf8"
