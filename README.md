@@ -30,3 +30,9 @@
 | 10 |  知识图谱  |  深度学习  |     |     |     |
 | 11 |  知识图谱  |  深度学习  |     |    |     |
 | 12 |  知识图谱  |     |     |     |     |
+
+## Materials
+- [OR](https://github.com/Kingsley-Cheng/UCAS/tree/main/Operation%20Research%20and%20Optimization)
+- [Stochastic Process](https://github.com/Kingsley-Cheng/UCAS/tree/main/Stochastic%20Process%20and%20Dynamic%20Programming)
+- [x] [NLP](https://github.com/Kingsley-Cheng/UCAS/tree/main/NLP)
+- [x] []
