@@ -1,0 +1,19 @@
+clc;clearvars;
+x0=[2;3];
+t_final = 100;
+[t,x]=ode45('Lotka_Volterra',[0,t_final],x0);
+subplot(1,3,1)
+plot(t,x(:,1))
+xlabel("t")
+ylabel("x")
+title("x(t)")
+subplot(1,3,2)
+plot(t,x(:,2))
+xlabel("t")
+ylabel("y")
+title("y(t)")
+subplot(1,3,3)
+plot(x(:,1),x(:,2))
+xlabel("x")
+ylabel("y")
+title("y(x)")

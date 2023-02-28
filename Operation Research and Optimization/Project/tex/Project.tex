@@ -1,0 +1,2839 @@
+\documentclass[12pt]{article}
+
+\usepackage{threeparttable}
+\usepackage[margin=1in]{geometry}
+\usepackage{newtxtext}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage[none]{hyphenat}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{appendix}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{float}
+%\usepackage{ctex}
+\usepackage[colorlinks,
+                       linkcolor=blue,
+                       anchorcolor=red,
+                       citecolor=red,
+                       ]{hyperref}
+
+
+\lstset{%
+	alsolanguage=Java,
+	%language={[ISO]C++}, %language为，还有{[Visual]C++}
+	%alsolanguage=[ANSI]C, %可以添加很多个alsolanguage,如alsolanguage=matlab,alsolanguage=VHDL等
+	%alsolanguage= tcl,
+	alsolanguage= XML,
+	tabsize=4, %
+	frame=shadowbox, %把代码用带有阴影的框圈起来
+	commentstyle=\color{red!50!green!50!blue!50},%浅灰色的注释
+	rulesepcolor=\color{red!20!green!20!blue!20},%代码块边框为淡青色
+	keywordstyle=\color{blue!90}\bfseries, %代码关键字的颜色为蓝色，粗体
+	showstringspaces=false,%不显示代码字符串中间的空格标记
+	stringstyle=\ttfamily, % 代码字符串的特殊格式
+	keepspaces=true, %
+	breakindent=22pt, %
+	numbers=left,%左侧显示行号 往左靠,还可以为right，或none，即不加行号
+	stepnumber=1,%若设置为2，则显示行号为1,3,5，即stepnumber为公差,默认stepnumber=1
+	%numberstyle=\tiny, %行号字体用小号
+	numberstyle={\color[RGB]{0,192,192}\tiny} ,%设置行号的大小，大小有tiny,scriptsize,footnotesize,small,normalsize,large等
+	numbersep=8pt, %设置行号与代码的距离，默认是5pt
+	basicstyle=\footnotesize, % 这句设置代码的大小
+	showspaces=false, %
+	flexiblecolumns=true, %
+	breaklines=true, %对过长的代码自动换行
+	breakautoindent=true,%
+	breakindent=4em, %
+	escapebegin=\begin{CJK*}{GBK}{hei},escapeend=\end{CJK*},
+	aboveskip=1em, %代码块边框
+	tabsize=2,
+	showstringspaces=false, %不显示字符串中的空格
+	backgroundcolor=\color[RGB]{245,245,244}, %代码背景色
+	%backgroundcolor=\color[rgb]{0.91,0.91,0.91} %添加背景色
+	escapeinside=``, %在``里显示中文
+	%% added by http://bbs.ctex.org/viewthread.php?tid=53451
+	fontadjust,
+	captionpos=t,
+	framextopmargin=2pt,framexbottommargin=2pt,abovecaptionskip=-3pt,belowcaptionskip=3pt,
+	xleftmargin=4em,xrightmargin=4em, % 设定listing左右的空白
+	texcl=true,
+	% 设定中文冲突，断行，列模式，数学环境输入，listing数字的样式
+	extendedchars=false,columns=flexible,mathescape=true
+	% numbersep=-1em
+}
+
+
+\renewcommand {\thetable} {\arabic{table}}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\fancyhead[L]{\slshape \MakeUppercase{Group Project}}
+\fancyhead[R]{\slshape Kingsley Cheng \& Zheng WenZhen}
+\fancyfoot[C]{\thepage}
+\renewcommand{\footrulewidth}{0pt}
+
+%\parindent 0ex
+\setlength{\parindent}{4em}
+\setlength{\parskip}{1em}
+\renewcommand{\baselinestretch}{1.5}
+\linespread{1.2}
+\begin{document}
+	
+	\begin{titlepage}
+		\begin{center}
+			\vspace*{1cm}
+			\Large{\textbf{2022-2023 Autumn Semester}}\\
+			\Large{\textbf{Operation Research}}\\
+			\vfill
+			\line(1,0){400}\\[1mm]
+			\huge{\textbf{Group Project}}\\[3mm]
+			\Large{\textbf{-LP Problems and Sensitive Analysis-}}\\[1mm]
+			\line(1,0){400}
+			\vfill
+			By \emph{Cheng Zijie: 202228000243001 }\\ 
+			\& \emph{Zheng Wenzhen: 202228000243004}\\
+			\today \\
+		\end{center}
+	\end{titlepage}
+	
+	\tableofcontents
+	\thispagestyle{empty}
+	\clearpage
+	\setcounter{page}{1}
+	\section{Problem 1. Golf-Sport: Managing Operations
+	}
+	\subsection{Question:}
+	\noindent Golf-Sport is a small-sized company that produces high-quality components for people who build their own golf clubs and prebuilt sets of clubs. There are five components—steel shafts, graphite shafts, forged iron heads, metal wood heads, and metal wood heads with titanium inserts—made in three plants—Chandler, Glendale, and Tucson—in the Golf-Sport system. Each plant can produce any of the components, although each plant has a different set of individual constraints and unit costs. These constraints cover labor and packaging machine time (the machine is used by all components); the specific values for each component-plant combination are given in Tables \ref{tab1},\ref{tab2},\ref{tab3}. Note that even though the components are identical in the three plants, different production processes are used, and therefore the products use different amounts of resources in different plants.
+
+	\noindent Besides component sales, the company takes the components and manufactures sets of golf clubs. Each set requires 13 shafts, 10 iron heads, and 3 wood heads. All of the shafts in a set must be the same type (steel or graphite), and all of the wood heads must be the same type (metal or metal with inserts). Assembly times per month for the sets at each plant are shown in Table \ref{tab4}.
+	\begin{table}[H]
+		\centering
+		\setlength{\belowcaptionskip}{0.1cm} 
+		\caption{Product-Resource Constraints:Chandler}
+		\label{tab1}
+		\begin{tabular}{lccc}
+			\hline
+			\hline
+		 & \multicolumn{3}{c}{Resources} \\
+		 \hline
+		Products&Labor  &  Packing   &    Advertising     \\
+		&(Minutes Unit)&(Minutes Unit)&(\$ Unit) \\
+		Steel shafts& 1&4&1.0  \\
+		Graphite shafts& 1.5&4&1.5\\
+		Forged iron heads&1.5&5&1.1\\
+		Metal wood heads&3&6&1.5\\
+		Titanium insert heads&4&6&1.9\\
+		\hline
+		Monthly availability&12,000&20,000&---\\
+		(minutes)&&&\\
+		\hline
+		\hline  
+		\end{tabular}
+		\end{table}
+
+		\begin{table}[H]
+			\centering
+			\setlength{\belowcaptionskip}{0.1cm} 
+			\caption{Product-Resource Constraints:Glendale}
+			\label{tab2}
+			\begin{tabular}{lccc}
+				\hline
+				\hline
+			 & \multicolumn{3}{c}{Resources} \\
+			 \hline
+			Products&Labor  &  Packing   &    Advertising     \\
+			&(Minutes Unit)&(Minutes Unit)&(\$ Unit) \\
+			Steel shafts& 3.5&7&1.1  \\
+			Graphite shafts& 3.5&7&1.1\\
+			Forged iron heads&4.5&8&1.1\\
+			Metal wood heads&4.5&9&1.2\\
+			Titanium insert heads&5.0&7&1.9\\
+			\hline
+			Monthly availability&15,000&40,000&---\\
+			(minutes)&&&\\
+			\hline
+			\hline  
+			\end{tabular}
+			\end{table}
+
+			\begin{table}[H]
+				\centering
+				\setlength{\belowcaptionskip}{0.1cm} 
+				\caption{Product-Resource constraints:Tucson}
+				\label{tab3}
+				\begin{tabular}{lccc}
+					\hline
+					\hline
+				 & \multicolumn{3}{c}{Resources} \\
+				 \hline
+				Products&Labor  &  Packing   &    Advertising     \\
+				&(Minutes Unit)&(Minutes Unit)&(\$ Unit) \\
+				Steel shafts& 3&7.5&1.3\\
+				Graphite shafts& 3.5&7.5&1.3\\
+				Forged iron heads&4&8.5&1.3\\
+				Metal wood heads&4.5&9.5&1.3\\
+				Titanium insert heads&5.5&8.0&1.9\\
+				\hline
+				Monthly availability&22,000&35,000&---\\
+				(minutes)&&&\\
+				\hline
+				\hline  
+				\end{tabular}
+				\end{table}
+	\noindent Each plant of Golf-Sport has a retail outlet to sell components and sets, and the specific plant is the only supplier for its retail outlet. The minimum and maximum amounts of demand for each plant–product pair are given in Table \ref{tab5}. Note that, although the minimums must be satisfied, you do not need to satisfy demand up to the maximum amount.
+	\begin{table}[H]
+		\centering
+		\setlength{\belowcaptionskip}{0.1cm}
+		\caption{Assembly Times per Month for Four Sets }
+		\label{tab4}
+		\begin{tabular}{ccc}
+			\hline
+			\hline
+			Plant&Time&Total Time Avaiable\\
+			&(Minutes per set)&(Minutes)\\
+			\hline
+			Chandler&65&5,500\\
+			Glendale&60&5,000\\
+			Tucson&65&6,000\\
+			\hline
+			\hline
+		\end{tabular}
+	\end{table}
+
+	\begin{table}[H]
+		\centering
+		\setlength{\belowcaptionskip}{0.1cm} 
+		\caption{Minimum and Maximum Product Demand per Month}
+		\label{tab5}
+		\begin{tabular}{lrrr}
+			\hline
+			\hline
+		 & \multicolumn{3}{c}{Store(for Plant)} \\
+		Products&Chandler  &  Glendale  &  Tucson    \\\hline
+		Steel shafts& [0,2,000]&[0,2,000]&[0,2,000]\\
+		Graphite shafts& [100,2,000]&[100,2,000]&[50,2,000]\\
+		Forged iron heads&[200,2,000]&[200,2,000]&[100,2,000]\\
+		Metal wood heads&[30,2,000]&[30,2,000]&[15,2,000]\\
+		Titanium insert heads&[100,2,000]&[100,2,000]&[100,2,000]\\
+		Set:Steel, metal&[0,200]&[0,200]&[0,200]\\
+		Set:Steel, insert&[0,100]&[0,100]&[0,100]\\
+		Set:Graphite, metal&[0,300]&[0,300]&[0,300]\\
+		Set:Graphite, insert&[0,400]&[0,400]&[0,400]\\
+		\hline
+		\hline  
+		\end{tabular}
+		\end{table}
+
+		\noindent This planning problem is for two months. The costs in Table \ref{tab6} increase by 12\% for the second month, and production times are stationary. Inventory costs are based on end-of-period inventory for each product set and cost out at 8\% of the cost values in Table \ref{tab6}. Table \ref{tab7} lists the revenue generated by each product. Initially, there is no inventory.
+		\begin{table}[H]
+			\centering
+			\setlength{\belowcaptionskip}{0.1cm} 
+			\caption{Material, Production, and Assembly Costs (\$) per Part or Set} 
+			\label{tab6}
+			\begin{tabular}{lrrr}
+				\hline
+				\hline
+			 & \multicolumn{3}{c}{Store(for Plant)} \\
+			Products&Chandler  &  Glendale  &  Tucson    \\\hline
+			Steel shafts& 6&5&7\\
+			Graphite shafts& 19&	18&20\\
+			Forged iron heads&4&5&5\\
+			Metal wood heads&10&11&12\\
+			Titanium insert heads&26&24&27\\
+			Set:Steel, metal&178&175&180\\
+			Set:Steel, insert&228&220&240\\
+			Set:Graphite, metal&350&360&370\\
+			Set:Graphite, insert&420&435&450 \\
+			\hline
+			\hline  
+			\end{tabular}
+			\end{table}
+
+			\begin{table}[H]
+				\centering
+				\setlength{\belowcaptionskip}{0.1cm} 
+				\caption{Revenue per Part or Set (\$) } 
+				\label{tab7}
+				\begin{tabular}{lrrr}
+					\hline
+					\hline
+				 & \multicolumn{3}{c}{Store(for Plant)} \\
+				Products&Chandler  &  Glendale  &  Tucson    \\\hline
+				Steel shafts& 10&10&12\\
+				Graphite shafts& 25&25&30\\
+				Forged iron heads&8&8&10\\
+				Metal wood heads&18&18&22\\
+				Titanium insert heads&40&40&45\\
+				Set:Steel, metal&290&290&310\\
+				Set:Steel, insert&380&380&420\\
+				Set:Graphite, metal&560&560&640\\
+				Set:Graphite, insert&650&650&720\\
+				\hline
+				\hline  
+				\end{tabular}
+				\end{table}
+
+		\noindent The corporation controls the capital available for expenses; the cash requirements for each product are given in the last column of Tables \ref{tab1}, \ref{tab2}, \ref{tab3}. There is a total of \$20,000 available for advertising the production for the entire system during each month, and any money not spent in a month is not available the next month. The corporation also controls graphite. Each graphite shaft requires 4 ounces of graphite; a total of 1,000 pounds is available for each of the two months.
+
+		\noindent Your job is to determine a recommendation for the company. A recommendation must include a plan for production and sales. In addition, you should also address the following sensitivity-analysis issues in your recommendation:
+		\begin{itemize}
+			\item If you could get more graphite or advertising cash, how much would you like, how would you use it, and what would you be willing to pay?
+			\item At what site(s) would you like to add extra packing machine hours, assembly hours, and/or extra labor hours? How much would you be willing to pay per hour and how many extra hours would you like?
+			\item Marketing is trying to get Golf-Sport to consider an advertising program that promises a 50\% increase in their maximum demand. Can we handle this with the current system or do we need more resources? How much more is the production going to cost if we take on the additional demand?
+		\end{itemize}
+	
+	\
+	
+	\
+
+	\noindent\textbf{Note that:}
+	\begin{enumerate}
+		\item The production costs for the sets (products 6, 7, 8, 9) in the objective account for the assembly cost (the costs in Table 6 – the costs for the components) 
+		\item The unit inventory costs for the sets are based on the total cost in Table 6 (i.e., the assembly cost and the costs of components).
+		\item 1 pound = 16 ounce
+		\item Decision variables are treated as continuous.
+	\end{enumerate}
+	\subsection{Solution:}
+	\subsubsection{Notioin Explanation}
+	The notions used in this problem are list in the table \ref{tab12}, and its detailed meanings are shown together as well.
+
+	\begin{longtable}{ll}
+		\caption{Notion Explanation in Problem 3}
+		\label{tab12}\\
+			\hline	
+			\hline
+			Notion&Explanation\\
+			\hline
+			$i$ &period $i$ between $(i-1)$th month and $i$th month, i=1,2;\\
+			$j$ & company $j$, $j=1,2$\footnote[1]{1--Chandler, 2--Glendale, 3--Tucson;};\\
+			$k$ & product or set $k$, $k=1,\cdots,9$\footnote[2]{1--Steel shafts, 2--Graphite shafts, 3--Forged iron heads, 4--Metal wood heads, 5-- Titanium insert heads, 6--Set: Steel, metal, 7--Set: Steel, insert, 8--Set: Graphite, metal, 9--Set: Graphite, insert.}; \\
+			$lbt_{i,j,k}$&labor time required to produce a product $k$ from company $j$ of period $i$;\\	
+			&$i=1,2,\ j=1,2,3,\ k=1,\cdots,5;$\\
+			$c_{i,j,k}$&cost from producing a product or a set $k$ from company $j$ of period $i$;\\
+			&$i=1,2,\ j=1,2,3,\ k=1,\cdots,5;$\\
+			$r_{i,j,k}$&revenue from selling a product or a set $k$ from company $j$ of period $i$;\\
+			&$i=1,2,\ j=1,2,3,\ k=1,\cdots,9;$\\
+			$ad_{i,j,k}$& advertisement cost from producing a product $k$ from company $j$ of period $i$;\\
+			&$i=1,2,\ j=1,2,3,\ k=1,\cdots,5;$\\
+			$h_{i,j,k}$&inventory cost of holding a product or a set $k$ from company $j$ of period $i$;\\
+			&$i=1,2,\ j=1,2,3,\ k=1,\cdots,9;$\\
+			$pt_{i,j,k}$&packing time required to produce a product $k$ from company $j$ of period $i$;\\
+			&$i=1,2,\ j=1,2,3,\ k=1,\cdots,5;$\\
+			$minD_{i,j,k}$& the minimum demand of  product or set $k$ from company $j$ of period $i$;\\
+			&$i=1,2,\ j=1,2,3,\ k=1,\cdots,9;$\\
+			$maxD_{i,j,k}$& the maximum demand of  product or set $k$ from company $j$ of period $i$;\\\
+			&$i=1,2,\ j=1,2,3,\ k=1,\cdots,9;$\\
+			$g_{i,j,k}$&graphite required to produce a product $k$ from company $j$ of period $i$;\\
+			&$i=1,2,\ j=1,2,3,\ k=1,\cdots,5;$\\
+			$ast_{i,j,k}$&assembly time equired to produce a set $k$ from company $j$ of period $i$;\\
+			&$i=1,2,\ j=1,2,3,\ k=6,\cdots,9;$\\
+			$A_{i,j}$& Total assembly time offered for company $j$ of period $i$;\ \ $i=1,2,\ j=1,2,3;$\\
+			$L_{i,j}$&Total labour time offered for company $j$ of period $i$;\ \ $i=1,2,\ j=1,2,3;$\\
+			$P_{i,j}$&Total packing time offered for company $j$ of period $i$;\ \ $i=1,2,\ j=1,2,3;$\\
+			$AD_{i}$& Total budget for advertising of period $i$;\ \ $i=1,2;$\\
+			$G_i$&Total graphite could be obtained in period $i$;\ \ $i=1,2.$\\
+			\hline
+			\hline
+	\end{longtable}
+	\subsubsection{Decision Variables}
+	The decision variables for the LP problem primaryly consist of three kinds. They are
+
+	\begin{itemize}
+		\item[--] $x_{i,j,k}$: the number of the product $k$ \textbf{produced} from company $j$ of period $i$;\ \ $i=1,2;\ j=1,2,3;\ k=1,\cdots,9;$
+		\item[--] $y_{i,j,k}$: the number of the product $k$ \textbf{sold} from company $j$ of period $i$;\ \ $i=1,2;\ j=1,2,3;\ k=1,\cdots,9$;
+		\item[--] $s_{i,j,k}$: the number of the product $k$ \textbf{hold} from company $j$ of period $i$;\ \ $i=1,2;\ j=1,2,3;\ k=1,\cdots,9$.
+	\end{itemize}
+	\subsubsection{Objective Function}
+	We are expected to make a plan to obtain maximum revenues. Obviously, selling  products could make profits, and producing and holding products need respective cost as well. Hence, our objective function is equation (\ref{eq1}).
+	\begin{equation}
+		\label{eq1}
+		\max \mathrm{z}=\sum\limits_{i=1}^2\sum\limits_{j=1}^3\sum\limits_{k=1}^9[r_{i,j,k}y_{i,j,k}-c_{i,j,k}x_{i,j,k}-h_{i,j,k}s_{i,j,k}].
+	\end{equation}
+	\subsubsection{Constraints}
+	The first restriction is the production capacity of the basic products, which is mainly made up of available labour time and offered packing time. Thus, we have constraints (\ref{eq2}) and (\ref{eq3}).
+	\begin{equation}
+		\label{eq2}
+		\sum\limits_{k=1}^5lbt_{i,j,k}x_{i,j,k}\leq L_{i,j}\quad \forall\ i=1,2;j=1,2,3;
+	\end{equation}
+	\begin{equation}
+		\label{eq3}
+		\sum\limits_{k=1}^5pt_{i,j,k}x_{i,j,k}\leq P_{i,j}\quad \forall i=1,2;j=1,2,3.
+	\end{equation}
+	In the Meanwhile, the production of the sets is also restricted with assembly time, whose form of constraint  is equation (\ref{eq4}).
+	\begin{equation}
+		\label{eq4}
+		\sum\limits_{k=6}^9ast_{i,j,k}x_{i,j,k}\leq A_{i,j}\quad \forall i=1,2;j=1,2,3.
+	\end{equation}
+
+	\noindent For sales, we contemporaryly have corresponding restrictions. We are required to meet the minimum demand and are now allowed to excess the maximum demand as well. In other words, we have constraints (\ref{eq5}), (\ref{eq6}).
+	\begin{equation}
+		\label{eq5}
+		y_{i,j,k}\geq minD_{i,j,k}\quad \forall i=1,2;j=1,2,3,k=1,\cdots,9;
+	\end{equation}
+	\begin{equation}
+		\label{eq6}
+		y_{i,j,k}\leq maxD_{i,j,k}\quad \forall i=1,2;j=1,2,3,k=1,\cdots,9.
+	\end{equation}
+
+	\noindent What we are supposed to take in consider is inventory, which is equal to the value that current production minus current sales plus previous inventory. Since the initial inventory is empty, then it is reasonable to denote $s_{0,j,k}=0$ in order to simplify the constraints formulation. Attention should be pay to the inventory of basic products ($k=1,\cdots,5$), in light of that the set products ($k=6,\cdots,9$) are composed by corresponding basic products. The detailed representations have been demonstrated in equation(\ref{eq7}-\ref{eq12}).
+	\begin{equation}
+		\label{eq7}
+		x_{i,j,1}-y_{i,j,1}+s_{i-1,j,1}-\sum\limits_{k=6,7}13x_{i,j,k}= s_{i,j,1},\ \ \forall\ i=1,2,\ j=1,2,3;
+	\end{equation}
+	\begin{equation}
+		\label{eq8}
+		x_{i,j,2}-y_{i,j,2}+s_{i-1,j,2}-\sum\limits_{k=8,9}13x_{i,j,k} = s_{i,j,2},\ \ \forall\ i=1,2,\ j=1,2,3;
+	\end{equation}
+	\begin{equation}
+		\label{eq9}
+		x_{i,j,3}-y_{i,j,3}+s_{i-1,j,3}-\sum\limits_{k=6}^910x_{i,j,k} = s_{i,j,3},\ \ \forall\ i=1,2,\ j=1,2,3;
+	\end{equation}
+	\begin{equation}
+		\label{eq10}
+		x_{i,j,4}-y_{i,j,4}+s_{i-1,j,4}-\sum\limits_{k=6,8}3x_{i,j,k} = s_{i,j,4},\ \ \forall\ i=1,2,\ j=1,2,3;
+	\end{equation}
+	\begin{equation}
+		\label{eq11}
+		x_{i,j,5}-y_{i,j,5}+s_{i-1,j,5}-\sum\limits_{k=7,9}3x_{i,j,k} = s_{i,j,5},\ \ \forall\ i=1,2,\ j=1,2,3;
+	\end{equation}
+	\begin{equation}
+		\label{eq12}
+		x_{i,j,k}-y_{i,j,k}+s_{i-1,j,k} = s_{i,j,k},\ \ \forall\ i=1,2,\ j=1,2,3,\ k=6,7,8,9.
+	\end{equation}
+	
+	\noindent The corporation controls the capital available for advertising expenses every month, and any money not spent in a month cannot be cumulated to next month. So we can get the constraints (\ref{eq13}).
+	\begin{equation}
+		\label{eq13}
+	\sum\limits_{j=1}^3\sum\limits_{k=1}^5ad_{i,j,k}x_{i,j,k}\le AD_i,\ \ \forall\ i=1,2.
+	\end{equation}
+
+	\noindent Finally, the supply for the graphite is also limited. Since only the graphite shaft requires graphite, we denote other basic products cost $g_{i,j,k}=0,\ k=1,3,4,5$ in order to represent conveniently. What needs to be focused on is that the surplus amount could be used in the following production. The formal expression is equation (\ref{eq14}), (\ref{eq15}) .
+	\begin{equation}
+		\label{eq14}
+		\sum\limits_{j=1}^3\sum\limits_{k=1}^5g_{1,j,k}x_{1,j,k}\leq G_1;
+	\end{equation}
+	\begin{equation}
+		\label{eq15}
+		\sum\limits_{j=1}^3\sum\limits_{k=1}^5g_{2,j,k}x_{2,j,k}\leq G_2+G_1-\sum\limits_{j=1}^3\sum\limits_{k=1}^5g_{1,j,k}x_{1,j,k}.
+	\end{equation}
+	
+	\noindent In summary, the total constraints for the LP problem are list below.
+	\begin{itemize}
+		\item $\sum\limits_{k=1}^5lbt_{i,j,k}x_{i,j,k}\leq L_{i,j}\quad \forall\ i=1,2;j=1,2,3;$
+		\item $\sum\limits_{k=1}^5pt_{i,j,k}x_{i,j,k}\leq P_{i,j}\quad \forall i=1,2;j=1,2,3;$
+		\item $\sum\limits_{k=6}^9ast_{i,j,k}x_{i,j,k}\leq A_{i,j}\quad \forall i=1,2;j=1,2,3;$
+		\item $y_{i,j,k}\geq minD_{i,j,k}\quad \forall i=1,2;j=1,2,3,k=1,\cdots,9;$
+		\item $y_{i,j,k}\leq maxD_{i,j,k}\quad \forall i=1,2;j=1,2,3,k=1,\cdots,9;$
+		\item $x_{i,j,1}-y_{i,j,1}+s_{i-1,j,1}-\sum\limits_{k=6,7}13x_{i,j,k}= s_{i,j,1},\ \ \forall\ i=1,2,\ j=1,2,3;$
+		\item $x_{i,j,2}-y_{i,j,2}+s_{i-1,j,2}-\sum\limits_{k=8,9}13x_{i,j,k} = s_{i,j,2},\ \ \forall\ i=1,2,\ j=1,2,3;$
+		\item $x_{i,j,3}-y_{i,j,3}+s_{i-1,j,3}-\sum\limits_{k=6}^910x_{i,j,k} = s_{i,j,3},\ \ \forall\ i=1,2,\ j=1,2,3;$
+		\item $x_{i,j,4}-y_{i,j,4}+s_{i-1,j,4}-\sum\limits_{k=6,8}3x_{i,j,k} = s_{i,j,4},\ \ \forall\ i=1,2,\ j=1,2,3;$
+		\item $x_{i,j,5}-y_{i,j,5}+s_{i-1,j,5}-\sum\limits_{k=7,9}3x_{i,j,k} = s_{i,j,5},\ \ \forall\ i=1,2,\ j=1,2,3;$
+		\item $x_{i,j,k}-y_{i,j,k}+s_{i-1,j,k} = s_{i,j,k},\ \ \forall\ i=1,2,\ j=1,2,3,\ k=6,7,8,9;$
+		\item $\sum\limits_{j=1}^3\sum\limits_{k=1}^5ad_{i,j,k}x_{i,j,k}\le AD_i,\ \ \forall\ i=1,2;$
+		\item $\sum\limits_{j=1}^3\sum\limits_{k=1}^5g_{1,j,k}x_{1,j,k}\leq G_1;$
+		\item $\sum\limits_{j=1}^3\sum\limits_{k=1}^5g_{2,j,k}x_{2,j,k}\leq G_2+G_1-\sum\limits_{j=1}^3\sum\limits_{k=1}^5g_{1,j,k}x_{1,j,k}.$
+	\end{itemize}
+	\subsubsection{Sign Restriction}
+	Obviously, all the decision variables should be nonnegative, so
+	\begin{equation}
+		\label{eq16}
+		x_{i,j,k},\ y_{i,j,k},\ s_{i,j,k}\geq 0,\ i=1,2,\ j=1,2,3,\ k=1,\cdots,9.
+	\end{equation}
+	\subsection{Result}
+	By the use of Lingo, we could easily obtain the result of this LP problem, which is shown in table \ref{tab13} - \ref{tab16}.
+		\begin{table}[H]
+		\centering
+		\setlength{\belowcaptionskip}{0.1cm}
+		\caption{The Production Arrangement of period 1}
+		\label{tab13}
+		\begin{tabular}{lccc}
+			\hline
+			\hline
+			&Chandler&Glendale&	Tucson\\
+			\hline
+			Steel shafts& 0&0&0\\
+			Graphite shafts& 795.5&545.4502&2189.334\\
+			Forged iron heads&735&542.654&245.6416\\
+			Metal wood heads&30&30&15\\
+			Titanium insert heads&2160.5&2102.796&2043.692\\
+			Set:Steel, metal&0&0&0\\
+			Set:Steel, insert&0&0&0\\
+			Set:Graphite, metal&0&0&0\\
+			Set:Graphite, insert&53.5&34.2654&14.56416\\
+			\hline
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\begin{table}[H]
+		\centering
+		\setlength{\belowcaptionskip}{0.1cm}
+		\caption{The Production Arrangement of period 2}
+		\label{tab14}
+		\begin{tabular}{lccc}
+			\hline
+			\hline
+			&Chandler&Glendale&	Tucson\\
+			\hline
+			Steel shafts& 0&0&0\\
+			Graphite shafts& 795.5&545.4502&1136.363\\
+			Forged iron heads&735&542.654&935.6635 \\
+			Metal wood heads&30&30&265.6991\\
+			Titanium insert heads&2160.5&2102.796&2000\\
+			Set:Steel, metal&0&0&0\\
+			Set:Steel, insert&0&0&0\\
+			Set:Graphite, metal&0&0&83.56635\\
+			Set:Graphite, insert&53.5&34.2654&0\\
+			\hline
+			\hline
+		\end{tabular}
+	\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Sale Arrangement of period 1}
+	\label{tab15}
+	\begin{tabular}{lccc}
+		\hline
+		\hline
+		&Chandler&Glendale&	Tucson\\
+		\hline
+		Steel shafts& 0&0&0\\
+		Graphite shafts& 100&100&2000\\
+		Forged iron heads&200&200&100\\
+		Metal wood heads&30&30&15\\
+		Titanium insert heads&2000&2000&2000\\
+		Set:Steel, metal&0&0&0\\
+		Set:Steel, insert&0&0&0\\
+		Set:Graphite, metal&0&0&0\\
+		Set:Graphite, insert&53.5&34.2654&14.56416\\
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Sale Arrangement of period 2}
+	\label{tab16}
+	\begin{tabular}{lccc}
+		\hline
+		\hline
+		&Chandler&Glendale&	Tucson\\
+		\hline
+		Steel shafts& 0&0&0\\
+		Graphite shafts& 100&100&50\\
+		Forged iron heads&200&200&100\\
+		Metal wood heads&30&30&15\\
+		Titanium insert heads&2000&2000&2000\\
+		Set:Steel, metal&0&0&0\\
+		Set:Steel, insert&0&0&0\\
+		Set:Graphite, metal&0&0&83.56635\\
+		Set:Graphite, insert&53.5&34.2654&0\\
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+
+\noindent The inventory of all products of three companys in two periods is both empty. In summary, the profit under this arrangement is  \$ 258326.8.
+
+\subsection{Sensitivity Analysis}
+\subsubsection{Graphite and Advertising Cash}
+According to the solution report of LINGO software, we could find that the constraints of Graphite and Advertising Cash in two periods are both slack. Hence, any increasement of the two resources could not increase the last profit, and there is no need to get more graphite or advertising cash.
+\subsubsection{Packing Machine Hours, Assembly Hours and Extra Labor Hours}
+\textbf{Packing Machine Hours}
+
+\noindent According to the solution report of LINGO software, we could obtain that the constraints of $P_{1,1},$ $ P_{1,3},P_{2,1},P_{2,3}$ is tight. For the packing time of company Chandler in period 1, we would like to increase 2509.032 hours, and we would like to pay for \$ 1.916667 per hour. For the packing time of company Tucson in period 1, we would like to increase 4144.081 hours, and we would like to pay for \$ 1.307506 per hour. For the packing time of company Chandler in period 2, we would like to increase 2509.032 hours, and we would like to pay for \$ 1.496667 per hour as the cost increased. For the packing time of company Tucson in period 2, we would like to increase 1844.423 hours, and we would like to pay for \$ 1.069194 per hour as the cost increased.  In conclusion, the sensitivity analysis of packinng machine hours are shown in table \ref{tab17}.
+
+\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{Sensitivity Analysis of Packing Machine Hours}
+	\label{tab17}
+	\begin{tabular}{ccc}
+		\hline
+		\hline
+		&Increasement&Payment(per hour)\\
+		\hline
+		$P_{1,1}$&2509.03&\$1.92\\
+		$P_{1,3}$&4144.08&\$1.31\\
+		$P_{2,1}$&2509.03&\$1.50\\	
+		$P_{2,3}$&1844.42&\$1.07\\
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+
+\noindent\textbf{ Assembly Hours}
+
+\noindent According to the solution report of LINGO software, we could obtain that the constraints of Assembly Hours are all slack. Hence, we have no needs to increase the assembly hours.
+
+\noindent\textbf{ Labor Hours}
+
+\noindent According to the solution report of LINGO software, we could obtain that the constraints of $L_{1,2},L_{2,2}$ is tight. For the labor time of company Glendale in period 1, we would like to increase 3811.923 hours, and we are willing to pay for \$ 2.037915 per hour. For the labor time of company Glendale in period 2, we would like to increase 5176.667 hours, and we are willing to pay for \$ 1.543128 per hour. In conclusion, the sensitivity analysis of labor hours are shown in table \ref{tab18}.
+\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{Sensitivity Analysis of Labor Hours}
+	\label{tab18}
+	\begin{tabular}{ccc}
+		\hline
+		\hline
+		&Increasement&Payment(per hour)\\
+		\hline
+		$L_{1,2}$&3811.92&\$2.04\\
+		$P_{2,2}$&5176.67&\$1.54\\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsubsection{Advertising Program}
+\noindent If a 50\% increase happpens in maximum demand, our current system can handle this by just adjusting some amount of production. The arrangement under the new situation is in table.
+
+		\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Production Arrangement of period 1}
+	\label{tab19}
+	\begin{tabular}{lccc}
+		\hline
+		\hline
+		&Chandler&Glendale&	Tucson\\
+		\hline
+		Steel shafts& 0&0&0\\
+		Graphite shafts&  418.2&100&1334.333\\
+		Forged iron heads& 444.7761 &200&100\\
+		Metal wood heads&30&30&15\\
+		Titanium insert heads&2653.881&2723&3000\\
+		Set:Steel, metal&0&0&0\\
+		Set:Steel, insert&0&0&0\\
+		Set:Graphite, metal&0&0&0\\
+		Set:Graphite, insert&24.47761&0&0\\
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Production Arrangement of period 2}
+	\label{tab20}
+	\begin{tabular}{lccc}
+		\hline
+		\hline
+		&Chandler&Glendale&	Tucson\\
+		\hline
+		Steel shafts& 0&0&0\\
+		Graphite shafts&418.209&100&643.4716\\
+		Forged iron heads&444.7761&200&556.5166 \\
+		Metal wood heads&30&30&151.955\\
+		Titanium insert heads&2653.881 &2723&3000\\
+		Set:Steel, metal&0&0&0\\
+		Set:Steel, insert&0&0&0\\
+		Set:Graphite, metal&0&0&45.65166\\
+		Set:Graphite, insert&24.47761 &0&0\\
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Sale Arrangement of period 1}
+	\label{tab21}
+	\begin{tabular}{lccc}
+		\hline
+		\hline
+		&Chandler&Glendale&	Tucson\\
+		\hline
+		Steel shafts& 0&0&0\\
+		Graphite shafts& 100&100&1334.333 \\
+		Forged iron heads&200&200&100\\
+		Metal wood heads&30&30&15\\
+		Titanium insert heads&2580.448&2723&3000\\
+		Set:Steel, metal&0&0&0\\
+		Set:Steel, insert&0&0&0\\
+		Set:Graphite, metal&0&0&0\\
+		Set:Graphite, insert&24.47761&0&0\\
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Sale Arrangement of period 2}
+	\label{tab22}
+	\begin{tabular}{lccc}
+		\hline
+		\hline
+		&Chandler&Glendale&	Tucson\\
+		\hline
+		Steel shafts& 0&0&0\\
+		Graphite shafts& 100&100&50\\
+		Forged iron heads&200&200&100\\
+		Metal wood heads&30&30&15\\
+		Titanium insert heads&2580.448&2723&3000\\
+		Set:Steel, metal&0&0&0\\
+		Set:Steel, insert&0&0&0\\
+		Set:Graphite, metal&0&0&45.65166\\
+		Set:Graphite, insert&24.47761&0&0\\
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+\noindent If we take on the additional demand, the production cost now is \$ 535457.3. At the meanwhile, if we not take on the additional demand, the production will cost \$ 502456.9, so the overpayment is \$ 33000.4 .
+	\section{Problem 2. Production planning and inventory control}
+	\subsection{Question:}
+
+	\noindent Consider a production line with four workstations, labelled $j = 1, 2, 3,$ and $4,$ in tandem (all products flow through all four machines in order). Three different products, labelled $i = A, B,$ and $C,$ are produced on the line. The hours required on each workstation for each product and the net profits per unit sold ($r_i$) are given in table \ref{tab8}.
+	\begin{table}[H]
+		\centering
+		\setlength{\belowcaptionskip}{0.1cm}
+		\caption{The Hours Required on Each Workstation }
+		\label{tab8}
+		\begin{tabular}{cccccc}
+			\hline
+			\hline
+			&1&2&3&4&$r_i$\\
+			\hline
+			A&2.4&1.1&0.8&3.0&\$50\\
+			B&2.0&2.2&1.2&2.1&\$65\\
+			C&0.9&0.9&1.0&2.5&\$70\\	
+			\hline
+			\hline
+		\end{tabular}
+	\end{table}
+
+	\noindent The number of hours available ($c_{jt}$) and the upper and lower limits on demand ($\overline{d}_{jt}$ and $\underline{d}_{jt}$) for each product over the next four quarters are in table \ref{tab9}.
+	\begin{table}[H]
+		\centering
+		\setlength{\belowcaptionskip}{0.1cm}
+		\caption{The Number of Hours Available and Limits on Demand}
+		\label{tab9}
+		\begin{tabular}{ccccc}
+			\hline
+			\hline
+			&1&2&3&4\\
+			\hline
+			$c_{1t}$&640&640&1280&1280\\
+			$c_{2t}$&640&640&640&640\\
+			$c_{3t}$&1920&1920&1920&1920\\
+			$c_{4t}$&1280&1280&1280&2560\\
+			$\overline{d}_{At}$&100&50&50&75\\
+			$\underline{d}_{At}$&0&0&0&0\\
+			$\overline{d}_{Bt}$&100&100&100&100\\
+			$\underline{d}_{Bt}$&20&20&20&25\\
+			$\overline{d}_{Ct}$&300&250&250&400\\
+			$\underline{d}_{Ct}$&0&0&0&50\\
+			\hline
+			\hline
+		\end{tabular}
+	\end{table}
+
+	\noindent The initial inventory is zero. All the decision variables are continuous.
+	\begin{enumerate}
+		\item[a.]Suppose we use a quarterly holding cost of \$5 and a quarterly backorder cost of \$10 per item on all products and allow backordering. Formulate an LP to maximize profit minus holding and backorder costs subject to the constraints on workstation capacity and min/max sales.
+		\item[b.] Solve your formulation in part (a). Which constraints are binding in your solution? Give a brief illustration of your solution.
+		\item[c.] Suppose that all the stockouts are lost sales. Use a quarterly holding cost of \$5 and a one-time lost-sale cost of \$5 per item (for counting the loss of reputation) on all the products. Formulate an LP to maximize profit minus holding and lost-sale costs subject to the constraints on workstation capacity and min/max sales.
+		\item[d.] Solve your formulation in part (c). Which constraints are binding in your solution? Give a brief illustration of your solution.
+		\item[e.] Compare and discuss the results from the models from part (a)-(b) and part (c)-(d).
+
+	\end{enumerate}
+	\subsection{Solution:}
+\subsubsection{Notioin Explanation}
+The notions used in this problem are consistent with those in the question.
+\subsubsection{Decision variables}
+The decision variables for the LP problem primaryly consist of three kinds. They are
+\begin{itemize}
+\item [--] $x_{i,j}$ The number of product $i$ \textbf{produced} in period $j$, $i=A,B,C,\ j=1,2,3,4$;
+\item [--]$y_{i,j}$ The number of product $i$ \textbf{sold} in period $j$, $i=A,B,C,\ j=1,2,3,4$;
+\item [--] $i^+_{i,j}$ The number of product $i$ \textbf{hold} in period $j$, $i=A,B,C,\ j=1,2,3,4$;
+\item [--] $i^-_{i,j}$ The number of product $i$ \textbf{backordered} in period $j$, $i=A,B,C,\ j=1,2,3,4$;
+\end{itemize}
+\subsubsection{Objective Function of Question (a)}
+Our aim is to maximize the profit by offering a production and sale plan. It is apparent that selling products is only way to obtain revenue. Holding products needs some cost, and backorder will make some profit loss although it could expand current sales. Thus, our objective function is equation (\ref{eq17}).
+\begin{equation}
+	\label{eq17}
+	\max \mathrm{z} = \sum\limits_{i=A,B,C}\sum\limits_{j=1}^4r_iy_{i,j}-5\sum\limits_{i=A,B,C}\sum\limits_{j=1}^4i^+_{i,j}-10\sum\limits_{i=A,B,C}\sum\limits_{j=1}^3i^-_{i,j}
+\end{equation}
+\subsubsection{Constraints of Question (a)}
+The frist restriction is the production capacity. If we denote $h_{i,t}$ as the hours  which product $i$ requires on workstation $t$ , we could get the constraint (\ref{eq18}).
+\begin{equation}
+\label{eq18}
+\sum\limits_{i=A,B,C}h_{i,t}x_{i,j}\leq c_{jt},\ \forall\ t=1,2,3,4,\ j=1,2,3,4.
+\end{equation}
+
+\noindent The Limits on demand is what we need to take in consider. So we have the constraint (\ref{eq19}).
+\begin{equation}
+\label{eq19}
+\underline{d}_{i,j}\leq y_{i,j}\leq\overline{d}_{i,j},\ \forall\ i=A,B,C,\ j=1,2,3,4.
+\end{equation}
+
+\noindent Since the inital inventory is empty and the backorder in the last month should be zero, we could denote $i^+_{i,0},i^-_{i,0},i^{i,4}$. Hence, the constraint of inventory is equation(\ref{eq20})
+\begin{equation}
+\label{eq20}
+i^+_{i,j}-i^-_{i,j}=i^+_{i,j-1}+x_{i,j}-y_{i,j},\ \forall\ i=A,B,C,\ j=1,2,3,4.
+\end{equation}
+In summary, the all constraints of the Question (a) are list below.
+\begin{itemize}
+\item $\sum\limits_{i=A,B,C}h_{i,t}x_{i,j}\leq c_{jt},\ \forall\ t=1,2,3,4,\ j=1,2,3,4.$
+\item $\underline{d}_{i,j}\leq y_{i,j}\leq\overline{d}_{i,j},\ \forall\ i=A,B,C,\ j=1,2,3,4.$
+\item $i^+_{i,j}-i^-_{i,j}=i^+_{i,j-1}+x_{i,j}-y_{i,j},\ \forall\ i=A,B,C,\ j=1,2,3,4.$
+\end{itemize}
+\subsubsection{Sign Restrictions of Question (a)}
+Obviously, all the decision variables should be nonnegative, so
+\begin{equation}
+\label{eq 21}
+x_{i,j},y_{i,j},i^+_{i,j},i^-_{i,j}\geq 0,\ i=A,B,C,\ j=1,2,3,4.
+\end{equation}
+\subsubsection{Results of Question (b)}
+By the use of the solver LINGO, we could easily obtain the results. The arrangement of the company is in the table \ref{tab23}, \ref{tab24}.
+	\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Production Arrangment in each period}
+	\label{tab23}
+	\begin{tabular}{ccccc}
+		\hline
+		\hline
+		&1&2&3&4\\
+		\hline
+		A&70.8333&50&50&75\\
+		B&100&100&110.2273&89.77273\\
+		C&300&250&250&400\\	
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+	\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Sale Arrangment in each period}
+	\label{tab24}
+	\begin{tabular}{ccccc}
+		\hline
+		\hline
+		&1&2&3&4\\
+		\hline
+		A&100&50&50&75\\
+		B&100&100&100&100\\
+		C&300&250&250&400\\	
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+\noindent The prodct A in period 1 has  29.16667  ammount backorder, and the product B in period 3 has 10.22727 amount inventory. The total profit under this arrangement is \$ 123407.2.
+
+\noindent By the analysis of the sensitivity report from LINGO, we could know that the constraint of capacity of workstaion 1 in period 1, the minimum demand of product B in period 1, the maximum demand of product B and C in period 1, the minimum demand of product B in period 2, the maximum demand of product A, B and C in period 2, the minimum demand of product B in period 3, the maximum demand of product A, B and C in period 3, the capacity of workstation 2 in period 4,  the minimum demand of product B, C in period 4, the maximum demand of product A, B and C in period 4 are tight. Hence the profit of the company is primaryly restricted by the maximum demand.
+
+\subsubsection{Objective Function of Question (c)}
+What is different with problem (a) is the lost sale in problem (c). In this situation, we could not expand our sales by backorder. In contrast, if we cannot meet the maximum demand in current period, we have to face the loss from lost sale. Hence, the Objective function in problem (c) is equation (\ref{eq21})
+\begin{equation}
+\label{eq21}
+	\max \mathrm{z} = \sum\limits_{i=A,B,C}\sum\limits_{j=1}^4r_iy_{i,j}-5\sum\limits_{i=A,B,C}\sum\limits_{j=1}^4i_{i,j}-5\sum\limits_{i=A,B,C}\sum\limits_{j=1}^3(\overline{d}_{i,j}-y_{i,j})
+\end{equation}
+\subsubsection{Constraints of Question (c)}
+The capacity constraints and the limits on demand are the same as the question (a). However, there is a slight difference in inventory and lose sale constraints. In this situation, the formulations should be \ref{eq22}.
+\begin{equation}
+\label{eq22}
+i_{i,j} = i_{i,j-1}+x_{i,j}-y_{i,j},\ \forall\ i=A,B,C,\ j=1,2,3,4.
+\end{equation}
+and $i_{i,0}$ is agreed as 0 here.
+\subsubsection{Sign Restrictions of Question (c)}
+Obviously, all the decision variables should be nonnegative, so
+\begin{equation}
+	\label{eq24}
+	x_{i,j},y_{i,j},i_{i,j}\geq 0,\ i=A,B,C,\ j=1,2,3,4.
+\end{equation}
+\subsubsection{The Resuts of Question (d)}
+By the use of the solver LINGO, we could easily obtain the results. The arrangement of the company is in the table \ref{tab23}, \ref{tab24}.
+\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Production Arrangment in each period}
+	\label{tab23}
+	\begin{tabular}{ccccc}
+		\hline
+		\hline
+		&1&2&3&4\\
+		\hline
+		A&70.8333&50&50&75\\
+		B&100&100&110.2273&89.77273\\
+		C&300&250&250&400\\	
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+\begin{table}[H]
+	\centering
+	\setlength{\belowcaptionskip}{0.1cm}
+	\caption{The Sale Arrangment in each period}
+	\label{tab24}
+	\begin{tabular}{ccccc}
+		\hline
+		\hline
+		&1&2&3&4\\
+		\hline
+		A&70.8333&50&50&75\\
+		B&100&100&100&100\\
+		C&300&250&250&400\\	
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+\noindent The product B in period 3 has 10.22727 amount inventory. The total profit under this arrangement is \$ 122094.7.
+
+\noindent By the analysis of the sensitivity report from LINGO, we could know that the constraint of capacity of workstaion 1 in period 1, the minimum demand of product B in period 1, the maximum demand of product B and C in period 1, the minimum demand of product B in period 2, the maximum demand of product A, B and C in period 2, the minimum demand of product B in period 3, the maximum demand of product A, B and C in period 3, the capacity of workstation 2 in period 4,  the minimum demand of product B, C in period 4, the maximum demand of product A, B and C in period 4 are tight. Hence the profit of the company is primaryly restricted by the maximum demand.
+
+\subsubsection{Some analysis of problem (e)}
+The result of (a)-(b) is similar with that of (c)-(d). Since the backorder of products, the first question could meet the maximum demand of product A. In consequence, the first question meets all maximum demands and large amounts of production capacity are waste. The company should broaden the market and make more advertisement. For the second question, since we cannot sell the production by backorder, we lose sale in product A of period 1. So the comapny could slightly add some labor time(70 hours by sensitivity analysis) on workstaion 1 to solve the lost sale. At other periods, the sales are saturated.
+\section{Problem 3. Worker scheduling }
+	\subsection{Question}
+
+	\noindent The Gotham City Police Department employs 30 police officers. Each officer works 5 days per week. The crime rate fluctuates with the day of the week, so the number of police officers required each day is different: Monday (day 1), 17; Tuesday (day 2), 23; Wednesday, 25; Thursday, 16; Friday, 21; Saturday, 28; Sunday (day 7), 18. The police department wants to schedule police officers to minimize the number whose days off are not consecutive. Formulate an LP that will accomplish this goal.
+	\subsection{Solution:}
+	\subsubsection{Notion Explanation}
+	The notions used in this problem are list in the table \ref{tab10}, and its detailed meanings are shown together as well.
+	\begin{table}[H]
+		\centering
+		\setlength{\belowcaptionskip}{0.1cm}
+		\caption{Notion Explanation in Problem 3}
+		\label{tab10}
+		\begin{tabular}{cc}
+			\hline
+			\hline
+			Notion&Explanation\\
+			\hline
+			$p_{ij}$ &the number of police officers whose days off are day $i$ and day $j$\\
+			\hline
+			\hline
+		\end{tabular}
+	\end{table}
+	\subsubsection{Objective Function}
+	According to the question describition, we are expected to minimize the number whose days off are not consecutive. Hence, the objective function has the formulation below.
+	\begin{equation}
+		\min z = p_{13}+p_{14}+p_{15}+p_{16}+p_{24}+p_{25}+p_{26}+p_{27}+p_{35}+p_{36}+p_{37}+p_{46}+p_{47}+p_{57}.
+	\end{equation}
+	\subsubsection{Constraints}
+
+	Obviously, we needs to meet the demand for police officers each days. In details, we are supposed to schedule at most 13 officers to rest on Monday:
+	\begin{equation}
+	p_{12}+p_{13}+p_{14}+p_{15}+p_{16}+p_{17}\le13;
+	\end{equation}
+	on Tuesday, we are supposed to schedule at most 7 officers to rest:
+	\begin{equation}
+		p_{12}+p_{23}+p_{24}+p_{25}+p_{26}+p_{27}\le7;
+		\end{equation}
+	on Wednesday, we are supposed to schedule at most 5 officers to rest:
+	\begin{equation}
+		p_{13}+p_{23}+p_{34}+p_{35}+p_{36}+p_{37}\le5;
+		\end{equation}
+	on Thursday, we are supposed to schedule at most 14 officers to rest:
+	\begin{equation}
+		p_{14}+p_{24}+p_{34}+p_{45}+p_{46}+p_{47}\le14;
+		\end{equation}
+	on Friday, we are supposed to schedule at most 9 officers to rest:
+		\begin{equation}
+			p_{15}+p_{25}+p_{35}+p_{45}+p_{56}+p_{57}\le9;
+		\end{equation}
+	on Saturday, we are supposed to schedule at most 2 officers to rest:
+		\begin{equation}
+			p_{16}+p_{26}+p_{36}+p_{46}+p_{56}+p_{67}\le2;
+		\end{equation}
+	on Sunday, we are supposed to schedule at most 12 officers to rest:
+		\begin{equation}
+			p_{17}+p_{27}+p_{37}+p_{47}+p_{57}+p_{67}\le12;
+		\end{equation}
+
+	\noindent We should let all 30 police officers to rest two days a week:
+	\begin{equation}
+		\sum\limits_{i=1\cdots7,j=1\cdots7,i<j}p_{ij}=30.
+	\end{equation}
+	\textbf{In summary}, the total constraints for the problem are list below:
+	\begin{itemize}
+		\item$p_{12}+p_{13}+p_{14}+p_{15}+p_{16}+p_{17}\le13;$ (day 1) 
+		\item $p_{12}+p_{23}+p_{24}+p_{25}+p_{26}+p_{27}\le7;$ (day 2)
+		\item $p_{13}+p_{23}+p_{34}+p_{35}+p_{36}+p_{37}\le5;$ (day 3)
+		\item $p_{14}+p_{24}+p_{34}+p_{45}+p_{46}+p_{47}\le14;$ (day 4)
+		\item $p_{15}+p_{25}+p_{35}+p_{45}+p_{56}+p_{57}\le9;$ (day 5)
+		\item $p_{16}+p_{26}+p_{36}+p_{46}+p_{56}+p_{67}\le2;$ (day 6)
+		\item $p_{17}+p_{27}+p_{37}+p_{47}+p_{57}+p_{67}\le12;$ (day 7)
+		\item $\sum\limits_{i=1\cdots7,j=1\cdots7,i<j}p_{ij}=30.$ (every police officer rest 2 day a week)
+	\end{itemize}
+	\subsubsection{Sign Restrictions}
+	Since the decision variables ---number of the police officers--- $p_{ij}$ should be nonnegative, so we could obtain sign restrictions as below:
+	$p_{ij}\ge 0,i,j=1...7,i<j.$
+	\subsection{Result}
+	By the use of Lingo, we could easily obtain the result of the LP problem, which is shown in table \ref{tab11}.
+	\begin{table}[H]
+		\centering
+		\setlength{\belowcaptionskip}{0.1cm}
+		\caption{The result of Problem 3}
+		\label{tab11}
+		\begin{tabular}{cc}
+			\hline
+			\hline
+			Days arranged to rest&Number\\
+			\hline
+			$p_{47}$& 1\\
+			$p_{12}$& 6\\
+			$p_{17}$& 7\\
+			$p_{23}$& 1\\
+			$p_{34}$& 4\\
+			$p_{45}$& 9\\
+			$p_{67}$& 2\\
+			\hline
+			\hline
+		\end{tabular}
+	\end{table}
+\noindent and at this situation, $z=1$.
+
+\noindent In another words, the Gotham City Police Department should arrange 6 police officers to rest in day 1 and day 2, 1 police officers to rest in day 2 and day 3, 4 police officers to rest in day 3 and day 4, 9 police officers to rest in day 4 and day 5, 2 police officers to rest in day 6 and day 7, and 1 police officers to rest in day 4 and day 7. Hence, just \textbf{1} police officer have no consecutive rest in total.
+
+\bibliographystyle{unsrt}
+\begin{thebibliography}
+{00}\bibitem{b1}
+Winston W L, Goldberg J B. Operations research: applications and algorithms[M]. Belmont: Thomson Brooks/Cole, 2004.
+\bibitem{b2}Hopp W J, Spearman M L. Factory physics[M]. Waveland Press, 2011.
+\bibitem{b3}Taha H A. Operations research: an introduction[M]. Pearson Educación, 2003.
+\end{thebibliography}
+\newpage
+
+\section*{Appendix}
+\appendix
+
+\begin{appendices}
+ \renewcommand{\thesection}{\Alph{section}}
+  \renewcommand{\thesubsection}{\Alph{section}. \Roman{subsection}}
+\section{Problem 1}
+\subsection{LINGO Code}
+\begin{lstlisting}
+sets:
+period;
+company;
+product;
+info(period,product,company):labortime,cost,revenue,ad,inventory,packtime,
+mindemand,maxdemand,graphite,x,y,i;
+assemble(period,company):num1;
+totalassemble(period,company):num2;
+totallabor(period,company):num3;
+totalpack(period,company):num4;
+endsets
+
+data:
+period = 1 2;
+company = 1 2 3;
+product = 1 2 3 4 5 6 7 8 9;
+
+cost = 6 5 7 19 18 20 4 5 5
+10.00         11.00         12.00         26.00         24.00         27.00
+30.00         27.00          3.00         32.00         33.00         18.00
+33.00         43.00         24.00         55.00         79.00         59.00
+6.72          5.60          7.84         21.28         20.16         22.40
+4.48          5.60          5.60         11.20         12.32         13.44
+29.12         26.88         30.24         33.60         30.24          3.36
+35.84         36.96         20.16         36.96         48.16         26.88
+61.60         88.48         66.08;
+
+labortime = 
+1.00          3.50          3.00          1.50          3.50          3.50
+1.50          4.50          4.00          3.00          4.50          4.50
+4.00          5.00          5.50             0             0             0
+0             0             0             0             0             0
+0             0             0          1.00          3.50          3.00
+1.50          3.50          3.50          1.50          4.50          4.00
+3.00          4.50          4.50          4.00          5.00          5.50
+0             0             0             0             0             0
+0             0             0             0             0             0;
+
+revenue=
+10.00         10.00         12.00         25.00         25.00         30.00
+8.00          8.00         10.00         18.00         18.00         22.00
+40.00         40.00         45.00        290.00        290.00        310.00
+380.00        380.00        420.00        560.00        560.00        640.00
+650.00        650.00        720.00         10.00         10.00         12.00
+25.00         25.00         30.00          8.00          8.00         10.00
+18.00         18.00         22.00         40.00         40.00         45.00
+290.00        290.00        310.00        380.00        380.00        420.00
+560.00        560.00        640.00        650.00        650.00        720.00;
+
+ad=
+1.00          1.10          1.30          1.50          1.10          1.30
+1.10          1.10          1.30          1.50          1.20          1.30
+1.90          1.90          1.90             0             0             0
+0             0             0             0             0             0
+0             0             0          1.00          1.10          1.30
+1.50          1.10          1.30          1.10          1.10          1.30
+1.50          1.20          1.30          1.90          1.90          1.90
+0             0             0             0             0             0
+0             0             0             0             0             0;
+
+inventory=
+ 0.48          0.40          0.56          1.52          1.44          1.60
+0.32          0.40          0.40          0.80          0.88          0.96
+2.08          1.92          2.16         14.24         14.00         14.40
+18.24         17.60         19.20         28.00         28.80         29.60
+33.60         34.80         36.00          0.54          0.45          0.63
+1.70          1.61          1.79          0.36          0.45          0.45
+0.90          0.99          1.08          2.33          2.15          2.42
+15.95         15.68         16.13         20.43         19.71         21.50
+31.36         32.26         33.15         37.63         38.98         40.32;
+
+packtime=
+4.00          7.00          7.50          4.00          7.00          7.50
+5.00          8.00          8.50          6.00          9.00          9.50
+6.00          7.00          8.00             0             0             0
+0             0             0             0             0             0
+0             0             0          4.00          7.00          7.50
+4.00          7.00          7.50          5.00          8.00          8.50
+6.00          9.00          9.50          6.00          7.00          8.00
+0             0             0             0             0             0
+0             0             0             0             0             0;
+
+mindemand=
+0             0             0        100.00        100.00         50.00
+200.00        200.00        100.00         30.00         30.00         15.00
+100.00        100.00        100.00             0             0             0
+0             0             0             0             0             0
+0             0             0             0             0             0
+100.00        100.00         50.00        200.00        200.00        100.00
+30.00         30.00         15.00        100.00        100.00        100.00
+0             0             0             0             0             0
+0             0             0             0             0             0;
+
+maxdemand=
+ 2000.00       2000.00       2000.00       2000.00       2000.00       2000.00       2000.00
+2000.00       2000.00       2000.00       2000.00       2000.00       2000.00       2000.00
+2000.00        200.00        200.00        200.00        100.00        100.00        100.00
+300.00        300.00        300.00        400.00        400.00        400.00       2000.00
+2000.00       2000.00       2000.00       2000.00       2000.00       2000.00       2000.00
+2000.00       2000.00       2000.00       2000.00       2000.00       2000.00       2000.00
+200.00        200.00        200.00        100.00        100.00        100.00        300.00
+300.00        300.00        400.00        400.00        400.00;
+
+graphite=
+0             0             0          0.25          0.25          0.25             0
+0             0             0             0             0             0             0
+0             0             0             0             0             0             0
+0             0             0             0             0             0             0
+0             0          0.25          0.25          0.25             0             0
+0             0             0             0             0             0             0
+0             0             0             0             0             0             0
+0             0             0             0             0;
+
+num1= 65 60 65 65 60 65;
+num2= 5500  5000 6000  5500 5000 6000;
+num3= 12000 15000 22000 12000 15000 22000;
+num4= 20000  40000 35000 20000 40000 35000;
+enddata;
+
+max= @sum(info(a,b,c):revenue(a,b,c)*y(a,b,c)-cost(a,b,c)*x(a,b,c)-inventory(a,b,c)*i(a,b,c));
+@for(period(a):@for(company(b):@sum(product(c):labortime(a,c,b)*x(a,c,b))<num3(a,b)));
+@for(period(a):@for(company(b):@sum(product(c):packtime(a,c,b)*x(a,c,b))<num4(a,b)));
+@for(period(a):@for(company(b):num1(a,b)*(x(a,6,b)+x(a,7,b)+x(a,8,b)+x(a,9,b))< num2(a,b)));
+@for(period(a):@for(company(b):@for(product(c):mindemand(a,c,b)<y(a,c,b))));
+@for(period(a):@for(company(b):@for(product(c):maxdemand(a,c,b)*1.5>y(a,c,b))));
+@for(company(b):x(1,1,b)-y(1,1,b)-13*x(1,6,b)-13*x(1,7,b)=i(1,1,b));
+@for(company(b):x(1,2,b)-y(1,2,b)-13*x(1,8,b)-13*x(1,9,b)=i(1,2,b));
+@for(company(b):x(1,3,b)-y(1,3,b)-10*x(1,6,b)-10*x(1,7,b)-10*x(1,8,b)-10*x(1,9,b)=i(1,3,b));
+@for(company(b):x(1,4,b)-y(1,4,b)-3*x(1,6,b)-3*x(1,8,b)=i(1,4,b));
+@for(company(b):x(1,5,b)-y(1,5,b)-3*x(1,7,b)-3*x(1,9,b)=i(1,5,b));
+@for(company(b):x(1,6,b)-y(1,6,b)=i(1,6,b));
+@for(company(b):x(1,7,b)-y(1,7,b)=i(1,7,b));
+@for(company(b):x(1,8,b)-y(1,8,b)=i(1,8,b));
+@for(company(b):x(1,9,b)-y(1,9,b)=i(1,9,b));
+
+@for(company(b):x(2,1,b)-y(2,1,b)-13*x(2,6,b)-13*x(2,7,b)+i(1,1,b)=i(2,1,b));
+@for(company(b):x(2,2,b)-y(2,2,b)-13*x(2,8,b)-13*x(2,9,b)+i(1,2,b)=i(2,2,b));
+@for(company(b):x(2,3,b)-y(2,3,b)-10*x(2,6,b)-10*x(2,7,b)-10*x(2,8,b)-
+10*x(2,9,b)+i(1,3,b)=i(2,3,b));
+@for(company(b):x(2,4,b)-y(2,4,b)-3*x(2,6,b)-3*x(2,8,b)+i(1,4,b)=i(2,4,b));
+@for(company(b):x(2,5,b)-y(2,5,b)-3*x(2,7,b)-3*x(2,9,b)+i(1,5,b)=i(2,5,b));
+@for(company(b):x(2,6,b)-y(2,6,b)+i(1,6,b)=i(2,6,b));
+@for(company(b):x(2,7,b)-y(2,7,b)+i(1,7,b)=i(2,7,b));
+@for(company(b):x(2,8,b)-y(2,8,b)+i(1,8,b)=i(2,8,b));
+@for(company(b):x(2,9,b)-y(2,9,b)+i(1,9,b)=i(2,9,b));
+
+@for(period(a):@sum(company(b):@sum(product(c):ad(a,c,b)*x(a,c,b)))<20000);
+@sum(company(b):@sum(product(c):graphite(1,c,b)*x(1,c,b)))<1000;
+@sum(company(b):@sum(product(c):graphite(2,c,b)*x(2,c,b)))
+<1000+1000-@sum(company(b):@sum(product(c):graphite(1,c,b)*x(1,c,b)));
+end model;
+\end{lstlisting}
+\subsection{Solution Report}
+\begin{lstlisting}
+LINGO/OSX64 19.0.46 (1 Sep 2021 ), LINDO API 13.0.4099.299
+
+Licensee info: chengzijie22@mails.ucas.ac.cn  
+License expires: 23 JAN 2023
+
+Global optimal solution found.
+Objective value:                              258326.8
+Infeasibilities:                              0.000000
+Total solver iterations:                            66
+Elapsed runtime seconds:                          0.17
+
+Model Class:                                        LP
+
+Total variables:                    162
+Nonlinear variables:                  0
+Integer variables:                    0
+
+Total constraints:                  185
+Nonlinear constraints:                0
+
+Total nonzeros:                     654
+Nonlinear nonzeros:                   0
+
+
+
+Variable           Value        Reduced Cost
+LABORTIME( 1, 1, 1)        1.000000            0.000000
+LABORTIME( 1, 1, 2)        3.500000            0.000000
+LABORTIME( 1, 1, 3)        3.000000            0.000000
+LABORTIME( 1, 2, 1)        1.500000            0.000000
+LABORTIME( 1, 2, 2)        3.500000            0.000000
+LABORTIME( 1, 2, 3)        3.500000            0.000000
+LABORTIME( 1, 3, 1)        1.500000            0.000000
+LABORTIME( 1, 3, 2)        4.500000            0.000000
+LABORTIME( 1, 3, 3)        4.000000            0.000000
+LABORTIME( 1, 4, 1)        3.000000            0.000000
+LABORTIME( 1, 4, 2)        4.500000            0.000000
+LABORTIME( 1, 4, 3)        4.500000            0.000000
+LABORTIME( 1, 5, 1)        4.000000            0.000000
+LABORTIME( 1, 5, 2)        5.000000            0.000000
+LABORTIME( 1, 5, 3)        5.500000            0.000000
+LABORTIME( 1, 6, 1)        0.000000            0.000000
+LABORTIME( 1, 6, 2)        0.000000            0.000000
+LABORTIME( 1, 6, 3)        0.000000            0.000000
+LABORTIME( 1, 7, 1)        0.000000            0.000000
+LABORTIME( 1, 7, 2)        0.000000            0.000000
+LABORTIME( 1, 7, 3)        0.000000            0.000000
+LABORTIME( 1, 8, 1)        0.000000            0.000000
+LABORTIME( 1, 8, 2)        0.000000            0.000000
+LABORTIME( 1, 8, 3)        0.000000            0.000000
+LABORTIME( 1, 9, 1)        0.000000            0.000000
+LABORTIME( 1, 9, 2)        0.000000            0.000000
+LABORTIME( 1, 9, 3)        0.000000            0.000000
+LABORTIME( 2, 1, 1)        1.000000            0.000000
+LABORTIME( 2, 1, 2)        3.500000            0.000000
+LABORTIME( 2, 1, 3)        3.000000            0.000000
+LABORTIME( 2, 2, 1)        1.500000            0.000000
+LABORTIME( 2, 2, 2)        3.500000            0.000000
+LABORTIME( 2, 2, 3)        3.500000            0.000000
+LABORTIME( 2, 3, 1)        1.500000            0.000000
+LABORTIME( 2, 3, 2)        4.500000            0.000000
+LABORTIME( 2, 3, 3)        4.000000            0.000000
+LABORTIME( 2, 4, 1)        3.000000            0.000000
+LABORTIME( 2, 4, 2)        4.500000            0.000000
+LABORTIME( 2, 4, 3)        4.500000            0.000000
+LABORTIME( 2, 5, 1)        4.000000            0.000000
+LABORTIME( 2, 5, 2)        5.000000            0.000000
+LABORTIME( 2, 5, 3)        5.500000            0.000000
+LABORTIME( 2, 6, 1)        0.000000            0.000000
+LABORTIME( 2, 6, 2)        0.000000            0.000000
+LABORTIME( 2, 6, 3)        0.000000            0.000000
+LABORTIME( 2, 7, 1)        0.000000            0.000000
+LABORTIME( 2, 7, 2)        0.000000            0.000000
+LABORTIME( 2, 7, 3)        0.000000            0.000000
+LABORTIME( 2, 8, 1)        0.000000            0.000000
+LABORTIME( 2, 8, 2)        0.000000            0.000000
+LABORTIME( 2, 8, 3)        0.000000            0.000000
+LABORTIME( 2, 9, 1)        0.000000            0.000000
+LABORTIME( 2, 9, 2)        0.000000            0.000000
+LABORTIME( 2, 9, 3)        0.000000            0.000000
+COST( 1, 1, 1)        6.000000            0.000000
+COST( 1, 1, 2)        5.000000            0.000000
+COST( 1, 1, 3)        7.000000            0.000000
+COST( 1, 2, 1)        19.00000            0.000000
+COST( 1, 2, 2)        18.00000            0.000000
+COST( 1, 2, 3)        20.00000            0.000000
+COST( 1, 3, 1)        4.000000            0.000000
+COST( 1, 3, 2)        5.000000            0.000000
+COST( 1, 3, 3)        5.000000            0.000000
+COST( 1, 4, 1)        10.00000            0.000000
+COST( 1, 4, 2)        11.00000            0.000000
+COST( 1, 4, 3)        12.00000            0.000000
+COST( 1, 5, 1)        26.00000            0.000000
+COST( 1, 5, 2)        24.00000            0.000000
+COST( 1, 5, 3)        27.00000            0.000000
+COST( 1, 6, 1)        30.00000            0.000000
+COST( 1, 6, 2)        27.00000            0.000000
+COST( 1, 6, 3)        3.000000            0.000000
+COST( 1, 7, 1)        32.00000            0.000000
+COST( 1, 7, 2)        33.00000            0.000000
+COST( 1, 7, 3)        18.00000            0.000000
+COST( 1, 8, 1)        33.00000            0.000000
+COST( 1, 8, 2)        43.00000            0.000000
+COST( 1, 8, 3)        24.00000            0.000000
+COST( 1, 9, 1)        55.00000            0.000000
+COST( 1, 9, 2)        79.00000            0.000000
+COST( 1, 9, 3)        59.00000            0.000000
+COST( 2, 1, 1)        6.720000            0.000000
+COST( 2, 1, 2)        5.600000            0.000000
+COST( 2, 1, 3)        7.840000            0.000000
+COST( 2, 2, 1)        21.28000            0.000000
+COST( 2, 2, 2)        20.16000            0.000000
+COST( 2, 2, 3)        22.40000            0.000000
+COST( 2, 3, 1)        4.480000            0.000000
+COST( 2, 3, 2)        5.600000            0.000000
+COST( 2, 3, 3)        5.600000            0.000000
+COST( 2, 4, 1)        11.20000            0.000000
+COST( 2, 4, 2)        12.32000            0.000000
+COST( 2, 4, 3)        13.44000            0.000000
+COST( 2, 5, 1)        29.12000            0.000000
+COST( 2, 5, 2)        26.88000            0.000000
+COST( 2, 5, 3)        30.24000            0.000000
+COST( 2, 6, 1)        33.60000            0.000000
+COST( 2, 6, 2)        30.24000            0.000000
+COST( 2, 6, 3)        3.360000            0.000000
+COST( 2, 7, 1)        35.84000            0.000000
+COST( 2, 7, 2)        36.96000            0.000000
+COST( 2, 7, 3)        20.16000            0.000000
+COST( 2, 8, 1)        36.96000            0.000000
+COST( 2, 8, 2)        48.16000            0.000000
+COST( 2, 8, 3)        26.88000            0.000000
+COST( 2, 9, 1)        61.60000            0.000000
+COST( 2, 9, 2)        88.48000            0.000000
+COST( 2, 9, 3)        66.08000            0.000000
+REVENUE( 1, 1, 1)        10.00000            0.000000
+REVENUE( 1, 1, 2)        10.00000            0.000000
+REVENUE( 1, 1, 3)        12.00000            0.000000
+REVENUE( 1, 2, 1)        25.00000            0.000000
+REVENUE( 1, 2, 2)        25.00000            0.000000
+REVENUE( 1, 2, 3)        30.00000            0.000000
+REVENUE( 1, 3, 1)        8.000000            0.000000
+REVENUE( 1, 3, 2)        8.000000            0.000000
+REVENUE( 1, 3, 3)        10.00000            0.000000
+REVENUE( 1, 4, 1)        18.00000            0.000000
+REVENUE( 1, 4, 2)        18.00000            0.000000
+REVENUE( 1, 4, 3)        22.00000            0.000000
+REVENUE( 1, 5, 1)        40.00000            0.000000
+REVENUE( 1, 5, 2)        40.00000            0.000000
+REVENUE( 1, 5, 3)        45.00000            0.000000
+REVENUE( 1, 6, 1)        290.0000            0.000000
+REVENUE( 1, 6, 2)        290.0000            0.000000
+REVENUE( 1, 6, 3)        310.0000            0.000000
+REVENUE( 1, 7, 1)        380.0000            0.000000
+REVENUE( 1, 7, 2)        380.0000            0.000000
+REVENUE( 1, 7, 3)        420.0000            0.000000
+REVENUE( 1, 8, 1)        560.0000            0.000000
+REVENUE( 1, 8, 2)        560.0000            0.000000
+REVENUE( 1, 8, 3)        640.0000            0.000000
+REVENUE( 1, 9, 1)        650.0000            0.000000
+REVENUE( 1, 9, 2)        650.0000            0.000000
+REVENUE( 1, 9, 3)        720.0000            0.000000
+REVENUE( 2, 1, 1)        10.00000            0.000000
+REVENUE( 2, 1, 2)        10.00000            0.000000
+REVENUE( 2, 1, 3)        12.00000            0.000000
+REVENUE( 2, 2, 1)        25.00000            0.000000
+REVENUE( 2, 2, 2)        25.00000            0.000000
+REVENUE( 2, 2, 3)        30.00000            0.000000
+REVENUE( 2, 3, 1)        8.000000            0.000000
+REVENUE( 2, 3, 2)        8.000000            0.000000
+REVENUE( 2, 3, 3)        10.00000            0.000000
+REVENUE( 2, 4, 1)        18.00000            0.000000
+REVENUE( 2, 4, 2)        18.00000            0.000000
+REVENUE( 2, 4, 3)        22.00000            0.000000
+REVENUE( 2, 5, 1)        40.00000            0.000000
+REVENUE( 2, 5, 2)        40.00000            0.000000
+REVENUE( 2, 5, 3)        45.00000            0.000000
+REVENUE( 2, 6, 1)        290.0000            0.000000
+REVENUE( 2, 6, 2)        290.0000            0.000000
+REVENUE( 2, 6, 3)        310.0000            0.000000
+REVENUE( 2, 7, 1)        380.0000            0.000000
+REVENUE( 2, 7, 2)        380.0000            0.000000
+REVENUE( 2, 7, 3)        420.0000            0.000000
+REVENUE( 2, 8, 1)        560.0000            0.000000
+REVENUE( 2, 8, 2)        560.0000            0.000000
+REVENUE( 2, 8, 3)        640.0000            0.000000
+REVENUE( 2, 9, 1)        650.0000            0.000000
+REVENUE( 2, 9, 2)        650.0000            0.000000
+REVENUE( 2, 9, 3)        720.0000            0.000000
+AD( 1, 1, 1)        1.000000            0.000000
+AD( 1, 1, 2)        1.100000            0.000000
+AD( 1, 1, 3)        1.300000            0.000000
+AD( 1, 2, 1)        1.500000            0.000000
+AD( 1, 2, 2)        1.100000            0.000000
+AD( 1, 2, 3)        1.300000            0.000000
+AD( 1, 3, 1)        1.100000            0.000000
+AD( 1, 3, 2)        1.100000            0.000000
+AD( 1, 3, 3)        1.300000            0.000000
+AD( 1, 4, 1)        1.500000            0.000000
+AD( 1, 4, 2)        1.200000            0.000000
+AD( 1, 4, 3)        1.300000            0.000000
+AD( 1, 5, 1)        1.900000            0.000000
+AD( 1, 5, 2)        1.900000            0.000000
+AD( 1, 5, 3)        1.900000            0.000000
+AD( 1, 6, 1)        0.000000            0.000000
+AD( 1, 6, 2)        0.000000            0.000000
+AD( 1, 6, 3)        0.000000            0.000000
+AD( 1, 7, 1)        0.000000            0.000000
+AD( 1, 7, 2)        0.000000            0.000000
+AD( 1, 7, 3)        0.000000            0.000000
+AD( 1, 8, 1)        0.000000            0.000000
+AD( 1, 8, 2)        0.000000            0.000000
+AD( 1, 8, 3)        0.000000            0.000000
+AD( 1, 9, 1)        0.000000            0.000000
+AD( 1, 9, 2)        0.000000            0.000000
+AD( 1, 9, 3)        0.000000            0.000000
+AD( 2, 1, 1)        1.000000            0.000000
+AD( 2, 1, 2)        1.100000            0.000000
+AD( 2, 1, 3)        1.300000            0.000000
+AD( 2, 2, 1)        1.500000            0.000000
+AD( 2, 2, 2)        1.100000            0.000000
+AD( 2, 2, 3)        1.300000            0.000000
+AD( 2, 3, 1)        1.100000            0.000000
+AD( 2, 3, 2)        1.100000            0.000000
+AD( 2, 3, 3)        1.300000            0.000000
+AD( 2, 4, 1)        1.500000            0.000000
+AD( 2, 4, 2)        1.200000            0.000000
+AD( 2, 4, 3)        1.300000            0.000000
+AD( 2, 5, 1)        1.900000            0.000000
+AD( 2, 5, 2)        1.900000            0.000000
+AD( 2, 5, 3)        1.900000            0.000000
+AD( 2, 6, 1)        0.000000            0.000000
+AD( 2, 6, 2)        0.000000            0.000000
+AD( 2, 6, 3)        0.000000            0.000000
+AD( 2, 7, 1)        0.000000            0.000000
+AD( 2, 7, 2)        0.000000            0.000000
+AD( 2, 7, 3)        0.000000            0.000000
+AD( 2, 8, 1)        0.000000            0.000000
+AD( 2, 8, 2)        0.000000            0.000000
+AD( 2, 8, 3)        0.000000            0.000000
+AD( 2, 9, 1)        0.000000            0.000000
+AD( 2, 9, 2)        0.000000            0.000000
+AD( 2, 9, 3)        0.000000            0.000000
+INVENTORY( 1, 1, 1)       0.4800000            0.000000
+INVENTORY( 1, 1, 2)       0.4000000            0.000000
+INVENTORY( 1, 1, 3)       0.5600000            0.000000
+INVENTORY( 1, 2, 1)        1.520000            0.000000
+INVENTORY( 1, 2, 2)        1.440000            0.000000
+INVENTORY( 1, 2, 3)        1.600000            0.000000
+INVENTORY( 1, 3, 1)       0.3200000            0.000000
+INVENTORY( 1, 3, 2)       0.4000000            0.000000
+INVENTORY( 1, 3, 3)       0.4000000            0.000000
+INVENTORY( 1, 4, 1)       0.8000000            0.000000
+INVENTORY( 1, 4, 2)       0.8800000            0.000000
+INVENTORY( 1, 4, 3)       0.9600000            0.000000
+INVENTORY( 1, 5, 1)        2.080000            0.000000
+INVENTORY( 1, 5, 2)        1.920000            0.000000
+INVENTORY( 1, 5, 3)        2.160000            0.000000
+INVENTORY( 1, 6, 1)        14.24000            0.000000
+INVENTORY( 1, 6, 2)        14.00000            0.000000
+INVENTORY( 1, 6, 3)        14.40000            0.000000
+INVENTORY( 1, 7, 1)        18.24000            0.000000
+INVENTORY( 1, 7, 2)        17.60000            0.000000
+INVENTORY( 1, 7, 3)        19.20000            0.000000
+INVENTORY( 1, 8, 1)        28.00000            0.000000
+INVENTORY( 1, 8, 2)        28.80000            0.000000
+INVENTORY( 1, 8, 3)        29.60000            0.000000
+INVENTORY( 1, 9, 1)        33.60000            0.000000
+INVENTORY( 1, 9, 2)        34.80000            0.000000
+INVENTORY( 1, 9, 3)        36.00000            0.000000
+INVENTORY( 2, 1, 1)       0.5400000            0.000000
+INVENTORY( 2, 1, 2)       0.4500000            0.000000
+INVENTORY( 2, 1, 3)       0.6300000            0.000000
+INVENTORY( 2, 2, 1)        1.700000            0.000000
+INVENTORY( 2, 2, 2)        1.610000            0.000000
+INVENTORY( 2, 2, 3)        1.790000            0.000000
+INVENTORY( 2, 3, 1)       0.3600000            0.000000
+INVENTORY( 2, 3, 2)       0.4500000            0.000000
+INVENTORY( 2, 3, 3)       0.4500000            0.000000
+INVENTORY( 2, 4, 1)       0.9000000            0.000000
+INVENTORY( 2, 4, 2)       0.9900000            0.000000
+INVENTORY( 2, 4, 3)        1.080000            0.000000
+INVENTORY( 2, 5, 1)        2.330000            0.000000
+INVENTORY( 2, 5, 2)        2.150000            0.000000
+INVENTORY( 2, 5, 3)        2.420000            0.000000
+INVENTORY( 2, 6, 1)        15.95000            0.000000
+INVENTORY( 2, 6, 2)        15.68000            0.000000
+INVENTORY( 2, 6, 3)        16.13000            0.000000
+INVENTORY( 2, 7, 1)        20.43000            0.000000
+INVENTORY( 2, 7, 2)        19.71000            0.000000
+INVENTORY( 2, 7, 3)        21.50000            0.000000
+INVENTORY( 2, 8, 1)        31.36000            0.000000
+INVENTORY( 2, 8, 2)        32.26000            0.000000
+INVENTORY( 2, 8, 3)        33.15000            0.000000
+INVENTORY( 2, 9, 1)        37.63000            0.000000
+INVENTORY( 2, 9, 2)        38.98000            0.000000
+INVENTORY( 2, 9, 3)        40.32000            0.000000
+PACKTIME( 1, 1, 1)        4.000000            0.000000
+PACKTIME( 1, 1, 2)        7.000000            0.000000
+PACKTIME( 1, 1, 3)        7.500000            0.000000
+PACKTIME( 1, 2, 1)        4.000000            0.000000
+PACKTIME( 1, 2, 2)        7.000000            0.000000
+PACKTIME( 1, 2, 3)        7.500000            0.000000
+PACKTIME( 1, 3, 1)        5.000000            0.000000
+PACKTIME( 1, 3, 2)        8.000000            0.000000
+PACKTIME( 1, 3, 3)        8.500000            0.000000
+PACKTIME( 1, 4, 1)        6.000000            0.000000
+PACKTIME( 1, 4, 2)        9.000000            0.000000
+PACKTIME( 1, 4, 3)        9.500000            0.000000
+PACKTIME( 1, 5, 1)        6.000000            0.000000
+PACKTIME( 1, 5, 2)        7.000000            0.000000
+PACKTIME( 1, 5, 3)        8.000000            0.000000
+PACKTIME( 1, 6, 1)        0.000000            0.000000
+PACKTIME( 1, 6, 2)        0.000000            0.000000
+PACKTIME( 1, 6, 3)        0.000000            0.000000
+PACKTIME( 1, 7, 1)        0.000000            0.000000
+PACKTIME( 1, 7, 2)        0.000000            0.000000
+PACKTIME( 1, 7, 3)        0.000000            0.000000
+PACKTIME( 1, 8, 1)        0.000000            0.000000
+PACKTIME( 1, 8, 2)        0.000000            0.000000
+PACKTIME( 1, 8, 3)        0.000000            0.000000
+PACKTIME( 1, 9, 1)        0.000000            0.000000
+PACKTIME( 1, 9, 2)        0.000000            0.000000
+PACKTIME( 1, 9, 3)        0.000000            0.000000
+PACKTIME( 2, 1, 1)        4.000000            0.000000
+PACKTIME( 2, 1, 2)        7.000000            0.000000
+PACKTIME( 2, 1, 3)        7.500000            0.000000
+PACKTIME( 2, 2, 1)        4.000000            0.000000
+PACKTIME( 2, 2, 2)        7.000000            0.000000
+PACKTIME( 2, 2, 3)        7.500000            0.000000
+PACKTIME( 2, 3, 1)        5.000000            0.000000
+PACKTIME( 2, 3, 2)        8.000000            0.000000
+PACKTIME( 2, 3, 3)        8.500000            0.000000
+PACKTIME( 2, 4, 1)        6.000000            0.000000
+PACKTIME( 2, 4, 2)        9.000000            0.000000
+PACKTIME( 2, 4, 3)        9.500000            0.000000
+PACKTIME( 2, 5, 1)        6.000000            0.000000
+PACKTIME( 2, 5, 2)        7.000000            0.000000
+PACKTIME( 2, 5, 3)        8.000000            0.000000
+PACKTIME( 2, 6, 1)        0.000000            0.000000
+PACKTIME( 2, 6, 2)        0.000000            0.000000
+PACKTIME( 2, 6, 3)        0.000000            0.000000
+PACKTIME( 2, 7, 1)        0.000000            0.000000
+PACKTIME( 2, 7, 2)        0.000000            0.000000
+PACKTIME( 2, 7, 3)        0.000000            0.000000
+PACKTIME( 2, 8, 1)        0.000000            0.000000
+PACKTIME( 2, 8, 2)        0.000000            0.000000
+PACKTIME( 2, 8, 3)        0.000000            0.000000
+PACKTIME( 2, 9, 1)        0.000000            0.000000
+PACKTIME( 2, 9, 2)        0.000000            0.000000
+PACKTIME( 2, 9, 3)        0.000000            0.000000
+MINDEMAND( 1, 1, 1)        0.000000            0.000000
+MINDEMAND( 1, 1, 2)        0.000000            0.000000
+MINDEMAND( 1, 1, 3)        0.000000            0.000000
+MINDEMAND( 1, 2, 1)        100.0000            0.000000
+MINDEMAND( 1, 2, 2)        100.0000            0.000000
+MINDEMAND( 1, 2, 3)        50.00000            0.000000
+MINDEMAND( 1, 3, 1)        200.0000            0.000000
+MINDEMAND( 1, 3, 2)        200.0000            0.000000
+MINDEMAND( 1, 3, 3)        100.0000            0.000000
+MINDEMAND( 1, 4, 1)        30.00000            0.000000
+MINDEMAND( 1, 4, 2)        30.00000            0.000000
+MINDEMAND( 1, 4, 3)        15.00000            0.000000
+MINDEMAND( 1, 5, 1)        100.0000            0.000000
+MINDEMAND( 1, 5, 2)        100.0000            0.000000
+MINDEMAND( 1, 5, 3)        100.0000            0.000000
+MINDEMAND( 1, 6, 1)        0.000000            0.000000
+MINDEMAND( 1, 6, 2)        0.000000            0.000000
+MINDEMAND( 1, 6, 3)        0.000000            0.000000
+MINDEMAND( 1, 7, 1)        0.000000            0.000000
+MINDEMAND( 1, 7, 2)        0.000000            0.000000
+MINDEMAND( 1, 7, 3)        0.000000            0.000000
+MINDEMAND( 1, 8, 1)        0.000000            0.000000
+MINDEMAND( 1, 8, 2)        0.000000            0.000000
+MINDEMAND( 1, 8, 3)        0.000000            0.000000
+MINDEMAND( 1, 9, 1)        0.000000            0.000000
+MINDEMAND( 1, 9, 2)        0.000000            0.000000
+MINDEMAND( 1, 9, 3)        0.000000            0.000000
+MINDEMAND( 2, 1, 1)        0.000000            0.000000
+MINDEMAND( 2, 1, 2)        0.000000            0.000000
+MINDEMAND( 2, 1, 3)        0.000000            0.000000
+MINDEMAND( 2, 2, 1)        100.0000            0.000000
+MINDEMAND( 2, 2, 2)        100.0000            0.000000
+MINDEMAND( 2, 2, 3)        50.00000            0.000000
+MINDEMAND( 2, 3, 1)        200.0000            0.000000
+MINDEMAND( 2, 3, 2)        200.0000            0.000000
+MINDEMAND( 2, 3, 3)        100.0000            0.000000
+MINDEMAND( 2, 4, 1)        30.00000            0.000000
+MINDEMAND( 2, 4, 2)        30.00000            0.000000
+MINDEMAND( 2, 4, 3)        15.00000            0.000000
+MINDEMAND( 2, 5, 1)        100.0000            0.000000
+MINDEMAND( 2, 5, 2)        100.0000            0.000000
+MINDEMAND( 2, 5, 3)        100.0000            0.000000
+MINDEMAND( 2, 6, 1)        0.000000            0.000000
+MINDEMAND( 2, 6, 2)        0.000000            0.000000
+MINDEMAND( 2, 6, 3)        0.000000            0.000000
+MINDEMAND( 2, 7, 1)        0.000000            0.000000
+MINDEMAND( 2, 7, 2)        0.000000            0.000000
+MINDEMAND( 2, 7, 3)        0.000000            0.000000
+MINDEMAND( 2, 8, 1)        0.000000            0.000000
+MINDEMAND( 2, 8, 2)        0.000000            0.000000
+MINDEMAND( 2, 8, 3)        0.000000            0.000000
+MINDEMAND( 2, 9, 1)        0.000000            0.000000
+MINDEMAND( 2, 9, 2)        0.000000            0.000000
+MINDEMAND( 2, 9, 3)        0.000000            0.000000
+MAXDEMAND( 1, 1, 1)        2000.000            0.000000
+MAXDEMAND( 1, 1, 2)        2000.000            0.000000
+MAXDEMAND( 1, 1, 3)        2000.000            0.000000
+MAXDEMAND( 1, 2, 1)        2000.000            0.000000
+MAXDEMAND( 1, 2, 2)        2000.000            0.000000
+MAXDEMAND( 1, 2, 3)        2000.000            0.000000
+MAXDEMAND( 1, 3, 1)        2000.000            0.000000
+MAXDEMAND( 1, 3, 2)        2000.000            0.000000
+MAXDEMAND( 1, 3, 3)        2000.000            0.000000
+MAXDEMAND( 1, 4, 1)        2000.000            0.000000
+MAXDEMAND( 1, 4, 2)        2000.000            0.000000
+MAXDEMAND( 1, 4, 3)        2000.000            0.000000
+MAXDEMAND( 1, 5, 1)        2000.000            0.000000
+MAXDEMAND( 1, 5, 2)        2000.000            0.000000
+MAXDEMAND( 1, 5, 3)        2000.000            0.000000
+MAXDEMAND( 1, 6, 1)        200.0000            0.000000
+MAXDEMAND( 1, 6, 2)        200.0000            0.000000
+MAXDEMAND( 1, 6, 3)        200.0000            0.000000
+MAXDEMAND( 1, 7, 1)        100.0000            0.000000
+MAXDEMAND( 1, 7, 2)        100.0000            0.000000
+MAXDEMAND( 1, 7, 3)        100.0000            0.000000
+MAXDEMAND( 1, 8, 1)        300.0000            0.000000
+MAXDEMAND( 1, 8, 2)        300.0000            0.000000
+MAXDEMAND( 1, 8, 3)        300.0000            0.000000
+MAXDEMAND( 1, 9, 1)        400.0000            0.000000
+MAXDEMAND( 1, 9, 2)        400.0000            0.000000
+MAXDEMAND( 1, 9, 3)        400.0000            0.000000
+MAXDEMAND( 2, 1, 1)        2000.000            0.000000
+MAXDEMAND( 2, 1, 2)        2000.000            0.000000
+MAXDEMAND( 2, 1, 3)        2000.000            0.000000
+MAXDEMAND( 2, 2, 1)        2000.000            0.000000
+MAXDEMAND( 2, 2, 2)        2000.000            0.000000
+MAXDEMAND( 2, 2, 3)        2000.000            0.000000
+MAXDEMAND( 2, 3, 1)        2000.000            0.000000
+MAXDEMAND( 2, 3, 2)        2000.000            0.000000
+MAXDEMAND( 2, 3, 3)        2000.000            0.000000
+MAXDEMAND( 2, 4, 1)        2000.000            0.000000
+MAXDEMAND( 2, 4, 2)        2000.000            0.000000
+MAXDEMAND( 2, 4, 3)        2000.000            0.000000
+MAXDEMAND( 2, 5, 1)        2000.000            0.000000
+MAXDEMAND( 2, 5, 2)        2000.000            0.000000
+MAXDEMAND( 2, 5, 3)        2000.000            0.000000
+MAXDEMAND( 2, 6, 1)        200.0000            0.000000
+MAXDEMAND( 2, 6, 2)        200.0000            0.000000
+MAXDEMAND( 2, 6, 3)        200.0000            0.000000
+MAXDEMAND( 2, 7, 1)        100.0000            0.000000
+MAXDEMAND( 2, 7, 2)        100.0000            0.000000
+MAXDEMAND( 2, 7, 3)        100.0000            0.000000
+MAXDEMAND( 2, 8, 1)        300.0000            0.000000
+MAXDEMAND( 2, 8, 2)        300.0000            0.000000
+MAXDEMAND( 2, 8, 3)        300.0000            0.000000
+MAXDEMAND( 2, 9, 1)        400.0000            0.000000
+MAXDEMAND( 2, 9, 2)        400.0000            0.000000
+MAXDEMAND( 2, 9, 3)        400.0000            0.000000
+GRAPHITE( 1, 1, 1)        0.000000            0.000000
+GRAPHITE( 1, 1, 2)        0.000000            0.000000
+GRAPHITE( 1, 1, 3)        0.000000            0.000000
+GRAPHITE( 1, 2, 1)       0.2500000            0.000000
+GRAPHITE( 1, 2, 2)       0.2500000            0.000000
+GRAPHITE( 1, 2, 3)       0.2500000            0.000000
+GRAPHITE( 1, 3, 1)        0.000000            0.000000
+GRAPHITE( 1, 3, 2)        0.000000            0.000000
+GRAPHITE( 1, 3, 3)        0.000000            0.000000
+GRAPHITE( 1, 4, 1)        0.000000            0.000000
+GRAPHITE( 1, 4, 2)        0.000000            0.000000
+GRAPHITE( 1, 4, 3)        0.000000            0.000000
+GRAPHITE( 1, 5, 1)        0.000000            0.000000
+GRAPHITE( 1, 5, 2)        0.000000            0.000000
+GRAPHITE( 1, 5, 3)        0.000000            0.000000
+GRAPHITE( 1, 6, 1)        0.000000            0.000000
+GRAPHITE( 1, 6, 2)        0.000000            0.000000
+GRAPHITE( 1, 6, 3)        0.000000            0.000000
+GRAPHITE( 1, 7, 1)        0.000000            0.000000
+GRAPHITE( 1, 7, 2)        0.000000            0.000000
+GRAPHITE( 1, 7, 3)        0.000000            0.000000
+GRAPHITE( 1, 8, 1)        0.000000            0.000000
+GRAPHITE( 1, 8, 2)        0.000000            0.000000
+GRAPHITE( 1, 8, 3)        0.000000            0.000000
+GRAPHITE( 1, 9, 1)        0.000000            0.000000
+GRAPHITE( 1, 9, 2)        0.000000            0.000000
+GRAPHITE( 1, 9, 3)        0.000000            0.000000
+GRAPHITE( 2, 1, 1)        0.000000            0.000000
+GRAPHITE( 2, 1, 2)        0.000000            0.000000
+GRAPHITE( 2, 1, 3)        0.000000            0.000000
+GRAPHITE( 2, 2, 1)       0.2500000            0.000000
+GRAPHITE( 2, 2, 2)       0.2500000            0.000000
+GRAPHITE( 2, 2, 3)       0.2500000            0.000000
+GRAPHITE( 2, 3, 1)        0.000000            0.000000
+GRAPHITE( 2, 3, 2)        0.000000            0.000000
+GRAPHITE( 2, 3, 3)        0.000000            0.000000
+GRAPHITE( 2, 4, 1)        0.000000            0.000000
+GRAPHITE( 2, 4, 2)        0.000000            0.000000
+GRAPHITE( 2, 4, 3)        0.000000            0.000000
+GRAPHITE( 2, 5, 1)        0.000000            0.000000
+GRAPHITE( 2, 5, 2)        0.000000            0.000000
+GRAPHITE( 2, 5, 3)        0.000000            0.000000
+GRAPHITE( 2, 6, 1)        0.000000            0.000000
+GRAPHITE( 2, 6, 2)        0.000000            0.000000
+GRAPHITE( 2, 6, 3)        0.000000            0.000000
+GRAPHITE( 2, 7, 1)        0.000000            0.000000
+GRAPHITE( 2, 7, 2)        0.000000            0.000000
+GRAPHITE( 2, 7, 3)        0.000000            0.000000
+GRAPHITE( 2, 8, 1)        0.000000            0.000000
+GRAPHITE( 2, 8, 2)        0.000000            0.000000
+GRAPHITE( 2, 8, 3)        0.000000            0.000000
+GRAPHITE( 2, 9, 1)        0.000000            0.000000
+GRAPHITE( 2, 9, 2)        0.000000            0.000000
+GRAPHITE( 2, 9, 3)        0.000000            0.000000
+X( 1, 1, 1)        0.000000            0.000000
+X( 1, 1, 2)        0.000000            0.000000
+X( 1, 1, 3)        0.000000            0.000000
+X( 1, 2, 1)        795.5000            0.000000
+X( 1, 2, 2)        545.4502            0.000000
+X( 1, 2, 3)        2189.334            0.000000
+X( 1, 3, 1)        735.0000            0.000000
+X( 1, 3, 2)        542.6540            0.000000
+X( 1, 3, 3)        245.6416            0.000000
+X( 1, 4, 1)        30.00000            0.000000
+X( 1, 4, 2)        30.00000            0.000000
+X( 1, 4, 3)        15.00000            0.000000
+X( 1, 5, 1)        2160.500            0.000000
+X( 1, 5, 2)        2102.796            0.000000
+X( 1, 5, 3)        2043.692            0.000000
+X( 1, 6, 1)        0.000000            0.000000
+X( 1, 6, 2)        0.000000            0.000000
+X( 1, 6, 3)        0.000000            0.000000
+X( 1, 7, 1)        0.000000            0.000000
+X( 1, 7, 2)        0.000000            0.000000
+X( 1, 7, 3)        0.000000            0.000000
+X( 1, 8, 1)        0.000000            0.000000
+X( 1, 8, 2)        0.000000            0.000000
+X( 1, 8, 3)        0.000000            0.000000
+X( 1, 9, 1)        53.50000            0.000000
+X( 1, 9, 2)        34.26540            0.000000
+X( 1, 9, 3)        14.56416            0.000000
+X( 2, 1, 1)        0.000000            2.706667
+X( 2, 1, 2)        0.000000            1.000948
+X( 2, 1, 3)        0.000000            3.858957
+X( 2, 2, 1)        795.5000            0.000000
+X( 2, 2, 2)        545.4502            0.000000
+X( 2, 2, 3)        1136.363            0.000000
+X( 2, 3, 1)        735.0000            0.000000
+X( 2, 3, 2)        542.6540            0.000000
+X( 2, 3, 3)        935.6635            0.000000
+X( 2, 4, 1)        30.00000            0.000000
+X( 2, 4, 2)        30.00000            0.000000
+X( 2, 4, 3)        265.6991            0.000000
+X( 2, 5, 1)        2160.500            0.000000
+X( 2, 5, 2)        2102.796            0.000000
+X( 2, 5, 3)        2000.000            0.000000
+X( 2, 6, 1)        0.000000            0.000000
+X( 2, 6, 2)        0.000000            53.47299
+X( 2, 6, 3)        0.000000            67.03355
+X( 2, 7, 1)        0.000000            19.77333
+X( 2, 7, 2)        0.000000            16.18768
+X( 2, 7, 3)        0.000000            19.42218
+X( 2, 8, 1)        0.000000            11.60000
+X( 2, 8, 2)        0.000000            0.000000
+X( 2, 8, 3)        83.56635            0.000000
+X( 2, 9, 1)        53.50000            0.000000
+X( 2, 9, 2)        34.26540            0.000000
+X( 2, 9, 3)        0.000000            0.000000
+Y( 1, 1, 1)        0.000000            3.666667
+Y( 1, 1, 2)        0.000000            2.132701
+Y( 1, 1, 3)        0.000000            4.806295
+Y( 1, 2, 1)        100.0000            0.000000
+Y( 1, 2, 2)        100.0000            0.000000
+Y( 1, 2, 3)        2000.000            0.000000
+Y( 1, 3, 1)        200.0000            0.000000
+Y( 1, 3, 2)        200.0000            0.000000
+Y( 1, 3, 3)        100.0000            0.000000
+Y( 1, 4, 1)        30.00000            0.000000
+Y( 1, 4, 2)        30.00000            0.000000
+Y( 1, 4, 3)        15.00000            0.000000
+Y( 1, 5, 1)        2000.000            0.000000
+Y( 1, 5, 2)        2000.000            0.000000
+Y( 1, 5, 3)        2000.000            0.000000
+Y( 1, 6, 1)        0.000000            118.0000
+Y( 1, 6, 2)        0.000000            96.94313
+Y( 1, 6, 3)        0.000000            145.8838
+Y( 1, 7, 1)        0.000000            78.00000
+Y( 1, 7, 2)        0.000000            55.00000
+Y( 1, 7, 3)        0.000000            90.00000
+Y( 1, 8, 1)        0.000000            20.00000
+Y( 1, 8, 2)        0.000000            11.94313
+Y( 1, 8, 3)        0.000000            5.883777
+Y( 1, 9, 1)        53.50000            0.000000
+Y( 1, 9, 2)        34.26540            0.000000
+Y( 1, 9, 3)        14.56416            0.000000
+Y( 2, 1, 1)        0.000000            0.000000
+Y( 2, 1, 2)        0.000000            0.000000
+Y( 2, 1, 3)        0.000000            0.000000
+Y( 2, 2, 1)        100.0000            0.000000
+Y( 2, 2, 2)        100.0000            0.000000
+Y( 2, 2, 3)        50.00000            0.000000
+Y( 2, 3, 1)        200.0000            0.000000
+Y( 2, 3, 2)        200.0000            0.000000
+Y( 2, 3, 3)        100.0000            0.000000
+Y( 2, 4, 1)        30.00000            0.000000
+Y( 2, 4, 2)        30.00000            0.000000
+Y( 2, 4, 3)        15.00000            0.000000
+Y( 2, 5, 1)        2000.000            0.000000
+Y( 2, 5, 2)        2000.000            0.000000
+Y( 2, 5, 3)        2000.000            0.000000
+Y( 2, 6, 1)        0.000000            53.77333
+Y( 2, 6, 2)        0.000000            0.000000
+Y( 2, 6, 3)        0.000000            0.000000
+Y( 2, 7, 1)        0.000000            0.000000
+Y( 2, 7, 2)        0.000000            0.000000
+Y( 2, 7, 3)        0.000000            0.000000
+Y( 2, 8, 1)        0.000000            0.000000
+Y( 2, 8, 2)        0.000000            3.685308
+Y( 2, 8, 3)        83.56635            0.000000
+Y( 2, 9, 1)        53.50000            0.000000
+Y( 2, 9, 2)        34.26540            0.000000
+Y( 2, 9, 3)        0.000000            4.788626
+I( 1, 1, 1)        0.000000            4.146667
+I( 1, 1, 2)        0.000000            2.532701
+I( 1, 1, 3)        0.000000            5.366295
+I( 1, 2, 1)        0.000000           0.9200000
+I( 1, 2, 2)        0.000000            1.011754
+I( 1, 2, 3)        0.000000           0.9873381
+I( 1, 3, 1)        0.000000            1.940000
+I( 1, 3, 2)        0.000000            2.026540
+I( 1, 3, 3)        0.000000            1.825650
+I( 1, 4, 1)        0.000000            2.120000
+I( 1, 4, 2)        0.000000            1.786540
+I( 1, 4, 3)        0.000000            1.783962
+I( 1, 5, 1)        0.000000            1.480000
+I( 1, 5, 2)        0.000000            1.513934
+I( 1, 5, 3)        0.000000           0.8264939
+I( 1, 6, 1)        0.000000            78.46667
+I( 1, 6, 2)        0.000000            110.9431
+I( 1, 6, 3)        0.000000            160.2838
+I( 1, 7, 1)        0.000000            96.24000
+I( 1, 7, 2)        0.000000            72.60000
+I( 1, 7, 3)        0.000000            109.2000
+I( 1, 8, 1)        0.000000            48.00000
+I( 1, 8, 2)        0.000000            37.05782
+I( 1, 8, 3)        0.000000            35.48378
+I( 1, 9, 1)        0.000000            33.60000
+I( 1, 9, 2)        0.000000            34.80000
+I( 1, 9, 3)        0.000000            31.21137
+I( 2, 1, 1)        0.000000            10.54000
+I( 2, 1, 2)        0.000000            10.45000
+I( 2, 1, 3)        0.000000            12.63000
+I( 2, 2, 1)        0.000000            28.96667
+I( 2, 2, 2)        0.000000            27.17095
+I( 2, 2, 3)        0.000000            32.20896
+I( 2, 3, 1)        0.000000            12.32333
+I( 2, 3, 2)        0.000000            12.99408
+I( 2, 3, 3)        0.000000            15.13815
+I( 2, 4, 1)        0.000000            21.08000
+I( 2, 4, 2)        0.000000            20.25408
+I( 2, 4, 3)        0.000000            24.67735
+I( 2, 5, 1)        0.000000            40.43000
+I( 2, 5, 2)        0.000000            36.74564
+I( 2, 5, 3)        0.000000            41.21355
+I( 2, 6, 1)        0.000000            359.7233
+I( 2, 6, 2)        0.000000            305.6800
+I( 2, 6, 3)        0.000000            326.1300
+I( 2, 7, 1)        0.000000            400.4300
+I( 2, 7, 2)        0.000000            399.7100
+I( 2, 7, 3)        0.000000            441.5000
+I( 2, 8, 1)        0.000000            591.3600
+I( 2, 8, 2)        0.000000            595.9453
+I( 2, 8, 3)        0.000000            673.1500
+I( 2, 9, 1)        0.000000            687.6300
+I( 2, 9, 2)        0.000000            688.9800
+I( 2, 9, 3)        0.000000            765.1086
+NUM1( 1, 1)        65.00000            0.000000
+NUM1( 1, 2)        60.00000            0.000000
+NUM1( 1, 3)        65.00000            0.000000
+NUM1( 2, 1)        65.00000            0.000000
+NUM1( 2, 2)        60.00000            0.000000
+NUM1( 2, 3)        65.00000            0.000000
+NUM2( 1, 1)        5500.000            0.000000
+NUM2( 1, 2)        5000.000            0.000000
+NUM2( 1, 3)        6000.000            0.000000
+NUM2( 2, 1)        5500.000            0.000000
+NUM2( 2, 2)        5000.000            0.000000
+NUM2( 2, 3)        6000.000            0.000000
+NUM3( 1, 1)        12000.00            0.000000
+NUM3( 1, 2)        15000.00            0.000000
+NUM3( 1, 3)        22000.00            0.000000
+NUM3( 2, 1)        12000.00            0.000000
+NUM3( 2, 2)        15000.00            0.000000
+NUM3( 2, 3)        22000.00            0.000000
+NUM4( 1, 1)        20000.00            0.000000
+NUM4( 1, 2)        40000.00            0.000000
+NUM4( 1, 3)        35000.00            0.000000
+NUM4( 2, 1)        20000.00            0.000000
+NUM4( 2, 2)        40000.00            0.000000
+NUM4( 2, 3)        35000.00            0.000000
+\end{lstlisting}
+\subsection{Sensitivity Report}
+\begin{lstlisting}
+Row    Slack or Surplus      Dual Price
+1        258326.8            1.000000
+2        972.2500            0.000000
+3        0.000000            2.037915
+4        2046.955            0.000000
+5        972.2500            0.000000
+6        0.000000            1.543128
+7        2084.431            0.000000
+8        0.000000            1.916667
+9        16851.04            0.000000
+10        0.000000            1.307506
+11        0.000000            1.496667
+12        16851.04            0.000000
+13        0.000000            1.069194
+14        2022.500            0.000000
+15        2944.076            0.000000
+16        5053.329            0.000000
+17        2022.500            0.000000
+18        2944.076            0.000000
+19        568.1872            0.000000
+20        0.000000            0.000000
+21        0.000000            1.666667
+22        0.000000            5.583333
+23        0.000000            3.500000
+24        1900.000            0.000000
+25        0.000000            0.000000
+26        0.000000            0.000000
+27        0.000000            0.000000
+28        53.50000            0.000000
+29        0.000000            0.000000
+30        0.000000           0.1327014
+31        0.000000            6.170616
+32        0.000000            2.170616
+33        1900.000            0.000000
+34        0.000000            0.000000
+35        0.000000            0.000000
+36        0.000000            0.000000
+37        34.26540            0.000000
+38        0.000000            0.000000
+39        1950.000            0.000000
+40        0.000000            6.113801
+41        0.000000            2.421308
+42        1900.000            0.000000
+43        0.000000            0.000000
+44        0.000000            0.000000
+45        0.000000            0.000000
+46        14.56416            0.000000
+47        0.000000            0.000000
+48        0.000000            2.266667
+49        0.000000            3.963333
+50        0.000000            2.180000
+51        1900.000            0.000000
+52        0.000000            0.000000
+53        0.000000            0.000000
+54        0.000000            0.000000
+55        53.50000            0.000000
+56        0.000000            0.000000
+57        0.000000           0.5609479
+58        0.000000            4.544076
+59        0.000000            1.264076
+60        1900.000            0.000000
+61        0.000000            0.000000
+62        0.000000            0.000000
+63        0.000000            0.000000
+64        34.26540            0.000000
+65        0.000000            0.000000
+66        0.000000           0.4189573
+67        0.000000            4.688152
+68        0.000000            1.597346
+69        1900.000            0.000000
+70        0.000000            0.000000
+71        0.000000            0.000000
+72        83.56635            0.000000
+73        0.000000            0.000000
+74        2000.000            0.000000
+75        1900.000            0.000000
+76        1800.000            0.000000
+77        1970.000            0.000000
+78        0.000000           -2.500000
+79        200.0000            0.000000
+80        100.0000            0.000000
+81        300.0000            0.000000
+82        346.5000            0.000000
+83        2000.000            0.000000
+84        1900.000            0.000000
+85        1800.000            0.000000
+86        1970.000            0.000000
+87        0.000000           -5.810427
+88        200.0000            0.000000
+89        100.0000            0.000000
+90        300.0000            0.000000
+91        365.7346            0.000000
+92        2000.000            0.000000
+93        0.000000          -0.1937046
+94        1900.000            0.000000
+95        1985.000            0.000000
+96        0.000000           -7.539952
+97        200.0000            0.000000
+98        100.0000            0.000000
+99        300.0000            0.000000
+100        385.4358            0.000000
+101        2000.000            0.000000
+102        1900.000            0.000000
+103        1800.000            0.000000
+104        1970.000            0.000000
+105        0.000000           -1.900000
+106        200.0000            0.000000
+107        100.0000            0.000000
+108        300.0000            0.000000
+109        346.5000            0.000000
+110        2000.000            0.000000
+111        1900.000            0.000000
+112        1800.000            0.000000
+113        1970.000            0.000000
+114        0.000000           -5.404360
+115        200.0000            0.000000
+116        100.0000            0.000000
+117        300.0000            0.000000
+118        365.7346            0.000000
+119        2000.000            0.000000
+120        1950.000            0.000000
+121        1900.000            0.000000
+122        1985.000            0.000000
+123        0.000000           -6.206445
+124        200.0000            0.000000
+125        100.0000            0.000000
+126        216.4336            0.000000
+127        400.0000            0.000000
+128        0.000000           -13.66667
+129        0.000000           -12.13270
+130        0.000000           -16.80630
+131        0.000000           -26.66667
+132        0.000000           -25.13270
+133        0.000000           -29.80630
+134        0.000000           -13.58333
+135        0.000000           -14.17062
+136        0.000000           -16.11380
+137        0.000000           -21.50000
+138        0.000000           -20.17062
+139        0.000000           -24.42131
+140        0.000000           -37.50000
+141        0.000000           -34.18957
+142        0.000000           -37.46005
+143        0.000000           -408.0000
+144        0.000000           -386.9431
+145        0.000000           -455.8838
+146        0.000000           -458.0000
+147        0.000000           -435.0000
+148        0.000000           -510.0000
+149        0.000000           -580.0000
+150        0.000000           -571.9431
+151        0.000000           -645.8838
+152        0.000000           -650.0000
+153        0.000000           -650.0000
+154        0.000000           -720.0000
+155        0.000000           -10.00000
+156        0.000000           -10.00000
+157        0.000000           -12.00000
+158        0.000000           -27.26667
+159        0.000000           -25.56095
+160        0.000000           -30.41896
+161        0.000000           -11.96333
+162        0.000000           -12.54408
+163        0.000000           -14.68815
+164        0.000000           -20.18000
+165        0.000000           -19.26408
+166        0.000000           -23.59735
+167        0.000000           -38.10000
+168        0.000000           -34.59564
+169        0.000000           -38.79355
+170        0.000000           -343.7733
+171        0.000000           -290.0000
+172        0.000000           -310.0000
+173        0.000000           -380.0000
+174        0.000000           -380.0000
+175        0.000000           -420.0000
+176        0.000000           -560.0000
+177        0.000000           -563.6853
+178        0.000000           -640.0000
+179        0.000000           -650.0000
+180        0.000000           -650.0000
+181        0.000000           -724.7886
+182        1552.088            0.000000
+183        1781.030            0.000000
+184        117.4289            0.000000
+185        498.1007            0.000000
+
+Ranges in which the basis is unchanged:
+
+Objective Coefficient Ranges:
+
+Current        Allowable        Allowable
+Variable      Coefficient         Increase         Decrease
+X( 1, 1, 1)        -6.000000         3.666667         INFINITY
+X( 1, 1, 2)        -5.000000         2.132701         INFINITY
+X( 1, 1, 3)        -7.000000         4.806295         INFINITY
+X( 1, 2, 1)        -19.00000         1.623529         2.276923
+X( 1, 2, 2)        -18.00000        0.2333333         2.457231
+X( 1, 2, 3)        -20.00000         1.870507        0.3669725
+X( 1, 3, 1)        -4.000000         3.325714         2.760000
+X( 1, 3, 2)        -5.000000         3.533884        0.4000000
+X( 1, 3, 3)        -5.000000        0.5333333         2.133387
+X( 1, 4, 1)        -10.00000         2.120000         INFINITY
+X( 1, 4, 2)        -11.00000         1.786540         INFINITY
+X( 1, 4, 3)        -12.00000         1.783962         INFINITY
+X( 1, 5, 1)        -26.00000         1.741176         2.941176
+X( 1, 5, 2)        -24.00000         1.764862         1.333333
+X( 1, 5, 3)        -27.00000        0.9351835         1.919431
+X( 1, 6, 1)        -30.00000         78.46667         INFINITY
+X( 1, 6, 2)        -27.00000         96.94313         INFINITY
+X( 1, 6, 3)        -3.000000         145.8838         INFINITY
+X( 1, 7, 1)        -32.00000         78.00000         INFINITY
+X( 1, 7, 2)        -33.00000         55.00000         INFINITY
+X( 1, 7, 3)        -18.00000         90.00000         INFINITY
+X( 1, 8, 1)        -33.00000         20.00000         INFINITY
+X( 1, 8, 2)        -43.00000         11.94313         INFINITY
+X( 1, 8, 3)        -24.00000         5.883777         INFINITY
+X( 1, 9, 1)        -55.00000         50.00000         20.00000
+X( 1, 9, 2)        -79.00000         122.6000         4.000000
+X( 1, 9, 3)        -59.00000         5.333333         5.758294
+X( 2, 1, 1)        -6.720000         2.706667         INFINITY
+X( 2, 1, 2)        -5.600000         1.000948         INFINITY
+X( 2, 1, 3)        -7.840000         3.858957         INFINITY
+X( 2, 2, 1)        -21.28000         2.276923         1.623529
+X( 2, 2, 2)        -20.16000        0.9863333         1.779000
+X( 2, 2, 3)        -22.40000        0.7788546         1.835492
+X( 2, 3, 1)        -4.480000         2.760000         3.325714
+X( 2, 3, 2)        -5.600000         3.049714         1.690857
+X( 2, 3, 3)        -5.600000         2.179878         1.178667
+X( 2, 4, 1)        -11.20000         2.180000         2.120000
+X( 2, 4, 2)        -12.32000         1.228436         1.786540
+X( 2, 4, 3)        -13.44000         1.846795         1.630993
+X( 2, 5, 1)        -29.12000         9.200000         1.741176
+X( 2, 5, 2)        -26.88000         10.16571         1.246154
+X( 2, 5, 3)        -30.24000         1.596209        0.8264939
+X( 2, 6, 1)        -33.60000         53.77333         78.46667
+X( 2, 6, 2)        -30.24000         53.47299         INFINITY
+X( 2, 6, 3)        -3.360000         67.03355         INFINITY
+X( 2, 7, 1)        -35.84000         19.77333         INFINITY
+X( 2, 7, 2)        -36.96000         16.18768         INFINITY
+X( 2, 7, 3)        -20.16000         19.42218         INFINITY
+X( 2, 8, 1)        -36.96000         11.60000         INFINITY
+X( 2, 8, 2)        -48.16000         3.685308         37.05782
+X( 2, 8, 3)        -26.88000         21.79878         4.892978
+X( 2, 9, 1)        -61.60000         27.60000         11.60000
+X( 2, 9, 2)        -88.48000         30.49714         3.738462
+X( 2, 9, 3)        -66.08000         4.788626         31.21137
+Y( 1, 1, 1)         10.00000         3.666667         INFINITY
+Y( 1, 1, 2)         10.00000         2.132701         INFINITY
+Y( 1, 1, 3)         12.00000         4.806295         INFINITY
+Y( 1, 2, 1)         25.00000         1.666667         INFINITY
+Y( 1, 2, 2)         25.00000        0.1327014         INFINITY
+Y( 1, 2, 3)         30.00000         INFINITY        0.1937046
+Y( 1, 3, 1)         8.000000         5.583333         INFINITY
+Y( 1, 3, 2)         8.000000         6.170616         INFINITY
+Y( 1, 3, 3)         10.00000         6.113801         INFINITY
+Y( 1, 4, 1)         18.00000         3.500000         INFINITY
+Y( 1, 4, 2)         18.00000         2.170616         INFINITY
+Y( 1, 4, 3)         22.00000         2.421308         INFINITY
+Y( 1, 5, 1)         40.00000         INFINITY         2.500000
+Y( 1, 5, 2)         40.00000         INFINITY         5.810427
+Y( 1, 5, 3)         45.00000         INFINITY         7.539952
+Y( 1, 6, 1)         290.0000         118.0000         INFINITY
+Y( 1, 6, 2)         290.0000         96.94313         INFINITY
+Y( 1, 6, 3)         310.0000         145.8838         INFINITY
+Y( 1, 7, 1)         380.0000         78.00000         INFINITY
+Y( 1, 7, 2)         380.0000         55.00000         INFINITY
+Y( 1, 7, 3)         420.0000         90.00000         INFINITY
+Y( 1, 8, 1)         560.0000         20.00000         INFINITY
+Y( 1, 8, 2)         560.0000         11.94313         INFINITY
+Y( 1, 8, 3)         640.0000         5.883777         INFINITY
+Y( 1, 9, 1)         650.0000         50.00000         20.00000
+Y( 1, 9, 2)         650.0000         122.6000         4.000000
+Y( 1, 9, 3)         720.0000         5.333333         5.758294
+Y( 2, 1, 1)         10.00000         2.706667         1.521026
+Y( 2, 1, 2)         10.00000         1.000948         1.245206
+Y( 2, 1, 3)         12.00000         3.858957         1.494014
+Y( 2, 2, 1)         25.00000         2.266667         INFINITY
+Y( 2, 2, 2)         25.00000        0.5609479         INFINITY
+Y( 2, 2, 3)         30.00000        0.4189573         INFINITY
+Y( 2, 3, 1)         8.000000         3.963333         INFINITY
+Y( 2, 3, 2)         8.000000         4.544076         INFINITY
+Y( 2, 3, 3)         10.00000         4.688152         INFINITY
+Y( 2, 4, 1)         18.00000         2.180000         INFINITY
+Y( 2, 4, 2)         18.00000         1.264076         INFINITY
+Y( 2, 4, 3)         22.00000         1.597346         INFINITY
+Y( 2, 5, 1)         40.00000         INFINITY         1.900000
+Y( 2, 5, 2)         40.00000         INFINITY         5.404360
+Y( 2, 5, 3)         45.00000         INFINITY         6.206445
+Y( 2, 6, 1)         290.0000         53.77333         INFINITY
+Y( 2, 6, 2)         290.0000         53.47299         305.6800
+Y( 2, 6, 3)         310.0000         67.03355         326.1300
+Y( 2, 7, 1)         380.0000         19.77333         400.4300
+Y( 2, 7, 2)         380.0000         16.18768         399.7100
+Y( 2, 7, 3)         420.0000         19.42218         441.5000
+Y( 2, 8, 1)         560.0000         11.60000         591.3600
+Y( 2, 8, 2)         560.0000         3.685308         INFINITY
+Y( 2, 8, 3)         640.0000         21.79878         4.892978
+Y( 2, 9, 1)         650.0000         27.60000         11.60000
+Y( 2, 9, 2)         650.0000         30.49714         3.738462
+Y( 2, 9, 3)         720.0000         4.788626         INFINITY
+I( 1, 1, 1)       -0.4800000         4.146667         INFINITY
+I( 1, 1, 2)       -0.4000000         2.532701         INFINITY
+I( 1, 1, 3)       -0.5600000         5.366295         INFINITY
+I( 1, 2, 1)        -1.520000        0.9200000         INFINITY
+I( 1, 2, 2)        -1.440000         1.011754         INFINITY
+I( 1, 2, 3)        -1.600000        0.9873381         INFINITY
+I( 1, 3, 1)       -0.3200000         1.940000         INFINITY
+I( 1, 3, 2)       -0.4000000         2.026540         INFINITY
+I( 1, 3, 3)       -0.4000000         1.825650         INFINITY
+I( 1, 4, 1)       -0.8000000         2.120000         INFINITY
+I( 1, 4, 2)       -0.8800000         1.786540         INFINITY
+I( 1, 4, 3)       -0.9600000         1.783962         INFINITY
+I( 1, 5, 1)        -2.080000         1.480000         INFINITY
+I( 1, 5, 2)        -1.920000         1.513934         INFINITY
+I( 1, 5, 3)        -2.160000        0.8264939         INFINITY
+I( 1, 6, 1)        -14.24000         78.46667         INFINITY
+I( 1, 6, 2)        -14.00000         110.9431         INFINITY
+I( 1, 6, 3)        -14.40000         160.2838         INFINITY
+I( 1, 7, 1)        -18.24000         96.24000         INFINITY
+I( 1, 7, 2)        -17.60000         72.60000         INFINITY
+I( 1, 7, 3)        -19.20000         109.2000         INFINITY
+I( 1, 8, 1)        -28.00000         48.00000         INFINITY
+I( 1, 8, 2)        -28.80000         37.05782         INFINITY
+I( 1, 8, 3)        -29.60000         35.48378         INFINITY
+I( 1, 9, 1)        -33.60000         33.60000         INFINITY
+I( 1, 9, 2)        -34.80000         34.80000         INFINITY
+I( 1, 9, 3)        -36.00000         31.21137         INFINITY
+I( 2, 1, 1)       -0.5400000         10.54000         INFINITY
+I( 2, 1, 2)       -0.4500000         10.45000         INFINITY
+I( 2, 1, 3)       -0.6300000         12.63000         INFINITY
+I( 2, 2, 1)        -1.700000         28.96667         INFINITY
+I( 2, 2, 2)        -1.610000         27.17095         INFINITY
+I( 2, 2, 3)        -1.790000         32.20896         INFINITY
+I( 2, 3, 1)       -0.3600000         12.32333         INFINITY
+I( 2, 3, 2)       -0.4500000         12.99408         INFINITY
+I( 2, 3, 3)       -0.4500000         15.13815         INFINITY
+I( 2, 4, 1)       -0.9000000         21.08000         INFINITY
+I( 2, 4, 2)       -0.9900000         20.25408         INFINITY
+I( 2, 4, 3)        -1.080000         24.67735         INFINITY
+I( 2, 5, 1)        -2.330000         40.43000         INFINITY
+I( 2, 5, 2)        -2.150000         36.74564         INFINITY
+I( 2, 5, 3)        -2.420000         41.21355         INFINITY
+I( 2, 6, 1)        -15.95000         359.7233         INFINITY
+I( 2, 6, 2)        -15.68000         305.6800         INFINITY
+I( 2, 6, 3)        -16.13000         326.1300         INFINITY
+I( 2, 7, 1)        -20.43000         400.4300         INFINITY
+I( 2, 7, 2)        -19.71000         399.7100         INFINITY
+I( 2, 7, 3)        -21.50000         441.5000         INFINITY
+I( 2, 8, 1)        -31.36000         591.3600         INFINITY
+I( 2, 8, 2)        -32.26000         595.9453         INFINITY
+I( 2, 8, 3)        -33.15000         673.1500         INFINITY
+I( 2, 9, 1)        -37.63000         687.6300         INFINITY
+I( 2, 9, 2)        -38.98000         688.9800         INFINITY
+I( 2, 9, 3)        -40.32000         765.1086         INFINITY
+
+Righthand Side Ranges:
+
+Current        Allowable        Allowable
+Row              RHS         Increase         Decrease
+2         12000.00         INFINITY         972.2500
+3         15000.00         3811.923         3615.000
+4         22000.00         INFINITY         2046.955
+5         12000.00         INFINITY         972.2500
+6         15000.00         5176.667         3615.000
+7         22000.00         INFINITY         2084.431
+8         20000.00         2509.032         6420.000
+9         40000.00         INFINITY         16851.04
+10         35000.00         4144.081         3007.500
+11         20000.00         2509.032         6420.000
+12         40000.00         INFINITY         16851.04
+13         35000.00         1844.423         17632.50
+14         5500.000         INFINITY         2022.500
+15         5000.000         INFINITY         2944.076
+16         6000.000         INFINITY         5053.329
+17         5500.000         INFINITY         2022.500
+18         5000.000         INFINITY         2944.076
+19         6000.000         INFINITY         568.1872
+20         0.000000         INFINITY         0.000000
+21        -100.0000         100.0000         828.9099
+22        -200.0000         200.0000         1284.000
+23        -30.00000         30.00000         1070.000
+24        -100.0000         INFINITY         1900.000
+25         0.000000         INFINITY         0.000000
+26         0.000000         INFINITY         0.000000
+27         0.000000         INFINITY         0.000000
+28         0.000000         INFINITY         53.50000
+29         0.000000         INFINITY         0.000000
+30        -100.0000         100.0000         825.9166
+31        -200.0000         200.0000         803.3333
+32        -30.00000         30.00000         803.3333
+33        -100.0000         INFINITY         1900.000
+34         0.000000         INFINITY         0.000000
+35         0.000000         INFINITY         0.000000
+36         0.000000         INFINITY         0.000000
+37         0.000000         INFINITY         34.26540
+38         0.000000         INFINITY         0.000000
+39        -50.00000         INFINITY         1950.000
+40        -100.0000         100.0000         353.8235
+41        -15.00000         15.00000         316.5789
+42        -100.0000         INFINITY         1900.000
+43         0.000000         INFINITY         0.000000
+44         0.000000         INFINITY         0.000000
+45         0.000000         INFINITY         0.000000
+46         0.000000         INFINITY         14.56416
+47         0.000000         INFINITY         0.000000
+48        -100.0000         100.0000         1605.000
+49        -200.0000         200.0000         1284.000
+50        -30.00000         30.00000         1070.000
+51        -100.0000         INFINITY         1900.000
+52         0.000000         INFINITY         0.000000
+53         0.000000         INFINITY         0.000000
+54         0.000000         INFINITY         0.000000
+55         0.000000         INFINITY         53.50000
+56         0.000000         INFINITY         0.000000
+57        -100.0000         100.0000         1032.857
+58        -200.0000         200.0000         803.3333
+59        -30.00000         30.00000         803.3333
+60        -100.0000         INFINITY         1900.000
+61         0.000000         INFINITY         0.000000
+62         0.000000         INFINITY         0.000000
+63         0.000000         INFINITY         0.000000
+64         0.000000         INFINITY         34.26540
+65         0.000000         INFINITY         0.000000
+66        -50.00000         50.00000         1950.000
+67        -100.0000         100.0000         1900.000
+68        -15.00000         15.00000         1856.053
+69        -100.0000         INFINITY         1900.000
+70         0.000000         INFINITY         0.000000
+71         0.000000         INFINITY         0.000000
+72         0.000000         INFINITY         83.56635
+73         0.000000         INFINITY         0.000000
+74        -2000.000         2000.000         INFINITY
+75        -2000.000         1900.000         INFINITY
+76        -2000.000         1800.000         INFINITY
+77        -2000.000         1970.000         INFINITY
+78        -2000.000         622.3077         580.4478
+79        -200.0000         200.0000         INFINITY
+80        -100.0000         100.0000         INFINITY
+81        -300.0000         300.0000         INFINITY
+82        -400.0000         346.5000         INFINITY
+83        -2000.000         2000.000         INFINITY
+84        -2000.000         1900.000         INFINITY
+85        -2000.000         1800.000         INFINITY
+86        -2000.000         1970.000         INFINITY
+87        -2000.000         762.3846         723.0000
+88        -200.0000         200.0000         INFINITY
+89        -100.0000         100.0000         INFINITY
+90        -300.0000         300.0000         INFINITY
+91        -400.0000         365.7346         INFINITY
+92        -2000.000         2000.000         INFINITY
+93        -2000.000         1950.000         401.0000
+94        -2000.000         1900.000         INFINITY
+95        -2000.000         1985.000         INFINITY
+96        -2000.000         932.6565         375.9375
+97        -200.0000         200.0000         INFINITY
+98        -100.0000         100.0000         INFINITY
+99        -300.0000         300.0000         INFINITY
+100        -400.0000         385.4358         INFINITY
+101        -2000.000         2000.000         INFINITY
+102        -2000.000         1900.000         INFINITY
+103        -2000.000         1800.000         INFINITY
+104        -2000.000         1970.000         INFINITY
+105        -2000.000         622.3077         580.4478
+106        -200.0000         200.0000         INFINITY
+107        -100.0000         100.0000         INFINITY
+108        -300.0000         300.0000         INFINITY
+109        -400.0000         346.5000         INFINITY
+110        -2000.000         2000.000         INFINITY
+111        -2000.000         1900.000         INFINITY
+112        -2000.000         1800.000         INFINITY
+113        -2000.000         1970.000         INFINITY
+114        -2000.000         1035.333         723.0000
+115        -200.0000         200.0000         INFINITY
+116        -100.0000         100.0000         INFINITY
+117        -300.0000         300.0000         INFINITY
+118        -400.0000         365.7346         INFINITY
+119        -2000.000         2000.000         INFINITY
+120        -2000.000         1950.000         INFINITY
+121        -2000.000         1900.000         INFINITY
+122        -2000.000         1985.000         INFINITY
+123        -2000.000         230.5529         1193.528
+124        -200.0000         200.0000         INFINITY
+125        -100.0000         100.0000         INFINITY
+126        -300.0000         216.4336         INFINITY
+127        -400.0000         400.0000         INFINITY
+128         0.000000         1605.000         0.000000
+129         0.000000         1032.857         0.000000
+130         0.000000         401.0000         0.000000
+131         0.000000         828.9099         933.4615
+132         0.000000         825.9166         959.0833
+133         0.000000         401.0000         2140.538
+134         0.000000         1284.000         746.7692
+135         0.000000         803.3333         847.0940
+136         0.000000         353.8235         417.4897
+137         0.000000         1070.000         30.00000
+138         0.000000         803.3333         30.00000
+139         0.000000         316.5789         15.00000
+140         0.000000         580.4478         622.3077
+141         0.000000         723.0000         762.3846
+142         0.000000         375.9375         932.6565
+143         0.000000         53.50000         0.000000
+144         0.000000         34.75962         0.000000
+145         0.000000         14.25355         0.000000
+146         0.000000         53.50000         0.000000
+147         0.000000         34.26540         0.000000
+148         0.000000         14.56416         0.000000
+149         0.000000         53.50000         0.000000
+150         0.000000         34.75962         0.000000
+151         0.000000         14.25355         0.000000
+152         0.000000         53.50000         346.5000
+153         0.000000         34.26540         365.7346
+154         0.000000         14.56416         385.4358
+155         0.000000         0.000000         2000.000
+156         0.000000         0.000000         2000.000
+157         0.000000         0.000000         2000.000
+158         0.000000         1605.000         933.4615
+159         0.000000         1032.857         959.0833
+160         0.000000         2351.000         245.9231
+161         0.000000         1284.000         746.7692
+162         0.000000         803.3333         946.2810
+163         0.000000         2074.412         216.9910
+164         0.000000         1070.000         30.00000
+165         0.000000         803.3333         30.00000
+166         0.000000         1856.053         194.1498
+167         0.000000         580.4478         622.3077
+168         0.000000         723.0000         1035.333
+169         0.000000         1193.528         230.5529
+170         0.000000         0.000000         0.000000
+171         0.000000         0.000000         200.0000
+172         0.000000         0.000000         200.0000
+173         0.000000         0.000000         100.0000
+174         0.000000         0.000000         100.0000
+175         0.000000         0.000000         100.0000
+176         0.000000         0.000000         300.0000
+177         0.000000         34.75962         0.000000
+178         0.000000         83.56635         216.4336
+179         0.000000         53.50000         346.5000
+180         0.000000         34.26540         365.7346
+181         0.000000         85.38741         0.000000
+182         20000.00         INFINITY         1552.088
+183         20000.00         INFINITY         1781.030
+184         1000.000         INFINITY         117.4289
+185         2000.000         INFINITY         498.1007
+\end{lstlisting}
+\section{Problem 2}
+\subsection{LINGO Code of Question (a)-(b)}
+\begin{lstlisting}
+model:
+max = 50*(ya1+ya2+ya3+ya4)+65*(yb1+yb2+yb3+yb4)+70*(yc1+yc2+yc3+yc4)-
+5*(ia11+ia21+ia31+ia41+ib11+ib21+ib31+ib41+ic11+ic21+ic31+ic41)-
+10*(ia12+ia22+ia32+ia42+ib12+ib22+ib32++ib42+ic12+ic22+ic32+ic42);
+2.4*xa1+2*xb1+0.9*xc1<640;
+1.1*xa1+2.2*xb1+0.9*xc1<640;
+0.8*xa1+1.2*xb1+xc1<1920;
+3*xa1+2.1*xb1+2.5*xc1<1280;
+ya1<100;
+yb1>20;
+yb1<100;
+yc1<300;
+ia11-ia12 = xa1-ya1;
+ib11-ib12 = xb1-yb1;
+ic11-ic12 = xc1-yc1;
+2.4*xa2+2*xb2+0.9*xc2<640;
+1.1*xa2+2.2*xb2+0.9*xc2<640;
+0.8*xa2+1.2*xb2+xc2<1920;
+3*xa2+2.1*xb2+2.5*xc2<1280;
+ya2<50;
+yb2>20;
+yb2<100;
+yc2<250;
+ia21-ia22 = ia11+xa2-ya2;
+ib21-ib22 = ib11+xb2-yb2;
+ic21-ic22 = ic11+xc2-yc2;
+2.4*xa3+2*xb3+0.9*xc3<1280;
+1.1*xa3+2.2*xb3+0.9*xc3<640;
+0.8*xa3+1.2*xb3+xc3<1920;
+3*xa3+2.1*xb3+2.5*xc3<1280;
+ya3<50;
+yb3>20;
+yb3<100;
+yc3<250;
+ia31-ia32 = ia21+xa3-ya3;
+ib31-ib32 = ib21+xb3-yb3;
+ic31-ic32 = ic21+xc3-yc3;
+
+2.4*xa4+2*xb4+0.9*xc4<1280;
+1.1*xa4+2.2*xb4+0.9*xc4<640;
+0.8*xa4+1.2*xb4+xc4<1920;
+3*xa4+2.1*xb4+2.5*xc4<2560;
+ya4<75;
+yb4>25;
+yb4<100;
+yc4<400;
+yc4>50;
+ia41-ia42 = ia31+xa4-ya4;
+ib41-ib42 = ib31+xb4-yb4;
+ic41-ic42 = ic31+xc4-yc4;
+\end{lstlisting}
+\subsection{Result Report of Question (a)-(b)}
+\begin{lstlisting}
+LINGO/OSX64 19.0.46 (1 Sep 2021 ), LINDO API 13.0.4099.299
+
+Licensee info: chengzijie22@mails.ucas.ac.cn  
+License expires: 23 JAN 2023
+
+Global optimal solution found.
+Objective value:                              123407.2
+Infeasibilities:                              0.000000
+Total solver iterations:                            14
+Elapsed runtime seconds:                          0.04
+
+Model Class:                                        LP
+
+Total variables:                     48
+Nonlinear variables:                  0
+Integer variables:                    0
+
+Total constraints:                   46
+Nonlinear constraints:                0
+
+Total nonzeros:                     158
+Nonlinear nonzeros:                   0
+
+
+
+Variable           Value        Reduced Cost
+YA1        100.0000            0.000000
+YA2        50.00000            0.000000
+YA3        50.00000            0.000000
+YA4        75.00000            0.000000
+YB1        100.0000            0.000000
+YB2        100.0000            0.000000
+YB3        100.0000            0.000000
+YB4        100.0000            0.000000
+YC1        300.0000            0.000000
+YC2        250.0000            0.000000
+YC3        250.0000            0.000000
+YC4        400.0000            0.000000
+IA11        0.000000            15.00000
+IA21        0.000000            5.000000
+IA31        0.000000            2.500000
+IA41        0.000000            7.500000
+IB11        0.000000            13.33333
+IB21        0.000000            5.000000
+IB31        10.22727            0.000000
+IB41        0.000000            10.00000
+IC11        0.000000            8.750000
+IC21        0.000000            5.000000
+IC31        0.000000            2.954545
+IC41        0.000000            7.045455
+IA12        29.16667            0.000000
+IA22        0.000000            10.00000
+IA32        0.000000            10.00000
+IA42        0.000000            7.500000
+IB12        0.000000            1.666667
+IB22        0.000000            10.00000
+IB32        0.000000            10.00000
+IB42        0.000000            5.000000
+IC12        0.000000            6.250000
+IC22        0.000000            10.00000
+IC32        0.000000            10.00000
+IC42        0.000000            7.954545
+XA1        70.83333            0.000000
+XB1        100.0000            0.000000
+XC1        300.0000            0.000000
+XA2        50.00000            0.000000
+XB2        100.0000            0.000000
+XC2        250.0000            0.000000
+XA3        50.00000            0.000000
+XB3        110.2273            0.000000
+XC3        250.0000            0.000000
+XA4        75.00000            0.000000
+XB4        89.77273            0.000000
+XC4        400.0000            0.000000
+
+Row    Slack or Surplus      Dual Price
+1        123407.2            1.000000
+2        0.000000            4.166667
+3        72.08333            0.000000
+4        1443.333            0.000000
+5        107.5000            0.000000
+6        0.000000            40.00000
+7        80.00000            0.000000
+8        0.000000            56.66667
+9        0.000000            66.25000
+10        0.000000            10.00000
+11        0.000000            8.333333
+12        0.000000            3.750000
+13        95.00000            0.000000
+14        140.0000            0.000000
+15        1510.000            0.000000
+16        295.0000            0.000000
+17        0.000000            50.00000
+18        80.00000            0.000000
+19        0.000000            65.00000
+20        0.000000            70.00000
+21        0.000000            0.000000
+22        0.000000            0.000000
+23        0.000000            0.000000
+24        714.5455            0.000000
+25        117.5000            0.000000
+26        1497.727            0.000000
+27        273.5227            0.000000
+28        0.000000            50.00000
+29        80.00000            0.000000
+30        0.000000            65.00000
+31        0.000000            70.00000
+32        0.000000            0.000000
+33        0.000000            0.000000
+34        0.000000            0.000000
+35        560.4545            0.000000
+36        0.000000            2.272727
+37        1352.273            0.000000
+38        1146.477            0.000000
+39        0.000000            47.50000
+40        75.00000            0.000000
+41        0.000000            60.00000
+42        0.000000            67.95455
+43        350.0000            0.000000
+44        0.000000            2.500000
+45        0.000000            5.000000
+46        0.000000            2.045455
+\end{lstlisting}
+\subsection{LINGO Code of Question (c)-(d)}
+\begin{lstlisting}
+model:
+max = 50*(ya1+ya2+ya3+ya4)+65*(yb1+yb2+yb3+yb4)+70*(yc1+yc2+yc3+yc4)-
+5*(ia11+ia21+ia31+ia41+ib11+ib21+ib31+ib41+ic11+ic21+ic31+ic41)-
+5*(1875-ya1-yb1-yc1-ya2-yb2-yc2-ya3-yb3-yc3-ya4-yb4-yc4);
+2.4*xa1+2*xb1+0.9*xc1<640;
+1.1*xa1+2.2*xb1+0.9*xc1<640;
+0.8*xa1+1.2*xb1+xc1<1920;
+3*xa1+2.1*xb1+2.5*xc1<1280;
+ya1<100;
+yb1>20;
+yb1<100;
+yc1<300;
+ia11 = xa1-ya1;
+ib11 = xb1-yb1;
+ic11 = xc1-yc1;
+2.4*xa2+2*xb2+0.9*xc2<640;
+1.1*xa2+2.2*xb2+0.9*xc2<640;
+0.8*xa2+1.2*xb2+xc2<1920;
+3*xa2+2.1*xb2+2.5*xc2<1280;
+ya2<50;
+yb2>20;
+yb2<100;
+yc2<250;
+ia21 = ia11+xa2-ya2;
+ib21 = ib11+xb2-yb2;
+ic21 = ic11+xc2-yc2; 
+2.4*xa3+2*xb3+0.9*xc3<1280;
+1.1*xa3+2.2*xb3+0.9*xc3<640;
+0.8*xa3+1.2*xb3+xc3<1920;
+3*xa3+2.1*xb3+2.5*xc3<1280;
+ya3<50;
+yb3>20;
+yb3<100;
+yc3<250;
+ia31 = ia21+xa3-ya3;
+ib31 = ib21+xb3-yb3;
+ic31 = ic21+xc3-yc3;
+2.4*xa4+2*xb4+0.9*xc4<1280;
+1.1*xa4+2.2*xb4+0.9*xc4<640;
+0.8*xa4+1.2*xb4+xc4<1920;
+3*xa4+2.1*xb4+2.5*xc4<2560;
+ya4<75;
+yb4>25;
+yb4<100;
+yc4<400;
+yc4>50;
+ia41 = ia31+xa4-ya4;
+ib41 = ib31+xb4-yb4;
+ic41 = ic31+xc4-yc4;
+\end{lstlisting}
+\subsection{Result Report of Question (c)-(d)}
+\begin{lstlisting}
+ LINGO/OSX64 19.0.46 (1 Sep 2021 ), LINDO API 13.0.4099.299
+
+Licensee info: chengzijie22@mails.ucas.ac.cn  
+License expires: 23 JAN 2023
+
+Global optimal solution found.
+Objective value:                              122094.7
+Infeasibilities:                              0.000000
+Total solver iterations:                            11
+Elapsed runtime seconds:                          0.05
+
+Model Class:                                        LP
+
+Total variables:                     36
+Nonlinear variables:                  0
+Integer variables:                    0
+
+Total constraints:                   46
+Nonlinear constraints:                0
+
+Total nonzeros:                     134
+Nonlinear nonzeros:                   0
+
+
+
+Variable           Value        Reduced Cost
+YA1        70.83333            0.000000
+YA2        50.00000            0.000000
+YA3        50.00000            0.000000
+YA4        75.00000            0.000000
+YB1        100.0000            0.000000
+YB2        100.0000            0.000000
+YB3        100.0000            0.000000
+YB4        100.0000            0.000000
+YC1        300.0000            0.000000
+YC2        250.0000            0.000000
+YC3        250.0000            0.000000
+YC4        400.0000            0.000000
+IA11        0.000000            60.00000
+IA21        0.000000            5.000000
+IA31        0.000000            2.500000
+IA41        0.000000            7.500000
+IB11        0.000000            50.83333
+IB21        0.000000            5.000000
+IB31        10.22727            0.000000
+IB41        0.000000            10.00000
+IC11        0.000000            25.62500
+IC21        0.000000            5.000000
+IC31        0.000000            2.954545
+IC41        0.000000            7.045455
+XA1        70.83333            0.000000
+XB1        100.0000            0.000000
+XC1        300.0000            0.000000
+XA2        50.00000            0.000000
+XB2        100.0000            0.000000
+XC2        250.0000            0.000000
+XA3        50.00000            0.000000
+XB3        110.2273            0.000000
+XC3        250.0000            0.000000
+XA4        75.00000            0.000000
+XB4        89.77273            0.000000
+XC4        400.0000            0.000000
+
+Row    Slack or Surplus      Dual Price
+1        122094.7            1.000000
+2        0.000000            22.91667
+3        72.08333            0.000000
+4        1443.333            0.000000
+5        107.5000            0.000000
+6        29.16667            0.000000
+7        80.00000            0.000000
+8        0.000000            24.16667
+9        0.000000            54.37500
+10        0.000000            55.00000
+11        0.000000            45.83333
+12        0.000000            20.62500
+13        95.00000            0.000000
+14        140.0000            0.000000
+15        1510.000            0.000000
+16        295.0000            0.000000
+17        0.000000            55.00000
+18        80.00000            0.000000
+19        0.000000            70.00000
+20        0.000000            75.00000
+21        0.000000            0.000000
+22        0.000000            0.000000
+23        0.000000            0.000000
+24        714.5455            0.000000
+25        117.5000            0.000000
+26        1497.727            0.000000
+27        273.5227            0.000000
+28        0.000000            55.00000
+29        80.00000            0.000000
+30        0.000000            70.00000
+31        0.000000            75.00000
+32        0.000000            0.000000
+33        0.000000            0.000000
+34        0.000000            0.000000
+35        560.4545            0.000000
+36        0.000000            2.272727
+37        1352.273            0.000000
+38        1146.477            0.000000
+39        0.000000            52.50000
+40        75.00000            0.000000
+41        0.000000            65.00000
+42        0.000000            72.95455
+43        350.0000            0.000000
+44        0.000000            2.500000
+45        0.000000            5.000000
+46        0.000000            2.045455
+\end{lstlisting}
+\section{Problem 3}
+\subsection{LINGO Code}
+\begin{lstlisting}
+min=p13+p14+p15+p16+p24+p25+p26+p27+p35+p36+p37+p46+p47+p57;
+p12+p13+p14+p15+p16+p17<13;
+p12+p23+p24+p25+p26+p27<7;
+p23+p34+p35+p36+p13+p37<5;
+p14+p24+p34+p45+p46+p47<14;
+p15+p25+p35+p45+p56+p57<9;
+p16+p26+p36+p46+p56+p67<2;
+p17+p27+p37+p47+p57+p67<12;
+p12+p13+p14+p15+p16+p17+p23+p24+p25+p26+p27+
+p34+p35+p36+p13+p37+p45+p46+p47+p56+p57+p67=30;
+\end{lstlisting}
+\subsection{Solution Report}
+\begin{lstlisting}
+LINGO/OSX64 19.0.46 (1 Sep 2021 ), LINDO API 13.0.4099.299
+
+Licensee info: chengzijie22@mails.ucas.ac.cn  
+License expires: 23 JAN 2023
+
+Global optimal solution found.
+Objective value:                              1.000000
+Infeasibilities:                              0.000000
+Total solver iterations:                             8
+Elapsed runtime seconds:                          0.08
+
+Model Class:                                        LP
+
+Total variables:                     21
+Nonlinear variables:                  0
+Integer variables:                    0
+
+Total constraints:                    9
+Nonlinear constraints:                0
+
+Total nonzeros:                      77
+Nonlinear nonzeros:                   0
+
+
+Variable           Value        Reduced Cost
+P13        0.000000            1.000000
+P14        0.000000            1.000000
+P15        0.000000            2.000000
+P16        0.000000            2.000000
+P24        0.000000            0.000000
+P25        0.000000            1.000000
+P26        0.000000            1.000000
+P27        0.000000            0.000000
+P35        0.000000            2.000000
+P36        0.000000            2.000000
+P37        0.000000            1.000000
+P46        0.000000            1.000000
+P47        1.000000            0.000000
+P57        0.000000            1.000000
+P12        6.000000            0.000000
+P17        7.000000            0.000000
+P23        1.000000            0.000000
+P34        4.000000            0.000000
+P45        9.000000            0.000000
+P56        0.000000            1.000000
+P67        2.000000            0.000000
+
+Row    Slack or Surplus      Dual Price
+1        1.000000           -1.000000
+2        0.000000            1.000000
+3        0.000000            0.000000
+4        0.000000            1.000000
+5        0.000000            0.000000
+6        0.000000            1.000000
+7        0.000000            1.000000
+8        2.000000            0.000000
+9        0.000000           -1.000000
+\end{lstlisting}
+\end{appendices}
+	\end{document}

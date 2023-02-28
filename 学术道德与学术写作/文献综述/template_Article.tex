@@ -1,0 +1,168 @@
+\documentclass[a4paper]{ctexart}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{color}
+%opening
+
+\hypersetup{
+	colorlinks = true,
+	linkcolor = blue,
+	urlcolor = blue,
+	filecolor = blue,
+	citecolor = cyan,
+}
+
+
+\title{文献综述}
+\author{承子杰}
+\date{}
+\begin{document}
+\newtheorem{definition}{Def}
+\newtheorem{theorem}{Thm}
+
+\maketitle
+
+\section{熵与互信息简介}
+熵的概念首先由德国物理学家克劳修斯于 1865 年提出，用于描述能量退化现象，后常用于描述某种物质系统状态可能出现的结果。基本的熵定义如下：
+\begin{definition}
+	设 $x\in\mathbb{R}^n$ 为一个离散型随机变量，其取值为 $i$ 概率分布为 $p_i$，则其熵定义为
+	\begin{equation}
+		H(x) = \sum\limits_{i=1}^\infty -p_i\log p_i
+	\end{equation}
+\end{definition}
+ 当 $\log$ 取 2 为底时，一般称为比特熵，用于描述信息编码需要的比特数，取 10 为底时，一般称为纳特熵。熵的大小描述了一个随机变量的复杂程度，即所蕴含的信息量。
+ 
+ 在统计学，机器学习等领域中，熵的思想进行了泛化。交叉熵是用于描述不同随机变量之间相似程度的一种度量，其基本定义如下
+ \begin{definition}
+	假设对于同一个随机变量有两种分布 $p(x)$ 和 $q(x)$，则其交叉熵定义为
+	\begin{equation}
+		H(p,q) = -\sum\limits_{i=1}^n p(x_i)\log(q(x_i))
+	\end{equation}
+ \end{definition}
+ 等价的还有相对熵（K-L散度），它都可以刻画 $p(x)$ 与 $q(x)$ 之间的差异。
+
+ 互信息一般用于描述一个随机变量包含另一个随机变量的信息量，其基本定义如下：
+ \begin{definition}
+	设 $(X,Y)$ 是两个随机变量，其联合分布为 $p(x,y)$, 边缘分布为 $p(x)$ 与 $p(y)$，则其互信息定义为
+	\begin{equation}
+		I(X,Y) = \sum\limits_{x\in X}\sum\limits_{y \in Y}p(x,y)\log\dfrac{p(x,y)}{p(x)p(y)}
+	\end{equation}
+ \end{definition}
+\section{Copula 熵}
+
+\subsection{Copula 熵研究发展}
+Copula 理论最早由 Sklar\cite{ref1} 在 1959 年提出，它是一个用来研究相关性的非常有效的方法。Copula 函数几乎包含了随机变量所有的相关信息，是一种变量之间相关性的刻画。Davy 和 Doucet\cite{ref2} 在 2003 年对 Copula 理论进行了进一步的发展，他们研究了 Copula 和 Cohen-Posch 理论之间的联系。
+
+互信息(MI)是信息论里一种有用的信息度量，它可以看成是一个随机变量中包含的关于另一个随机变量的信息量，是变量独立性的一种度量。COVER T\cite{ref3} M 在 2006 年的研究中指出 MI 与熵是两种不同的概念。
+
+Copula 理论与 MI 之间相关性的研究首先由 Jenison 和 Reale\cite{ref4} 进行。他们在 2004 年讨论如何用 Copula 函数对神经种群进行建模时，证明了  MI 实际上是一种熵，并被定义为 Copula 熵。与此同时，他们还创造了一种估计 MI 的方法。随后 De la Pe\~na V\cite{ref5} 等人在 2006 年用 U-统计量表示的 Copula 研究了 MI 和其他一些相关性度量的性质。2011 年 MA Jian\cite{ref6} 等人提出了一种通过由 Copula 函数定义的 Copula 熵来估计 MI 的方法，与之前的方法相比，该方法大大降低了 MI 估计的难度，并逐步衍生出基于 Copula 熵进行变量选择、因果探索等应用。
+
+\subsection{Copula 熵基本理论}
+在我们介绍 Copula 熵的基本理论前，首先我们需要定义 Copula 熵 (式 \ref{eq1}).
+\begin{definition}
+设 $x\in\mathbb{R}^N$ 是一个随机变量，其边际分布为 $u = [F_1,\cdots,F_N]$，Copula 分布为 $C(u)$，则 Copula 熵定义为：
+
+\begin{equation}
+	H_c (x) =  -\int_c c(u)\log c(u) du
+	\label{eq1}
+\end{equation}
+
+其中 	$c(u) = \dfrac{d^N C(u) }{du_1du_2\cdots du_N}$
+\end{definition}
+
+同时，我们还需要定义边际熵（Margin Entropy）（式 \ref{eq2}）：
+\begin{definition}
+设 $x\in\mathbb{R}^N$ 是一个随机变量，其边际密度函数为 $u = [p_1,\cdots,p_N]$，则边际熵定义为
+\begin{equation}
+	\label{eq2}
+	H(x_i) = -\int_{x_i}p_i(x_i)\log(p_i(x_i))dx_i,\quad i = 1,2,\cdots,N
+\end{equation}
+\end{definition}
+
+通过上述定义，我们可以得到互信息（MI）与 Copula 熵之间的关系。
+\begin{theorem}
+	\label{thm1}
+	随机变量 $x$ 的互信息与其 Copula 熵互为相反数，即：
+	\begin{equation}
+	I(x) = - H_c(x)
+\end{equation}
+\end{theorem}
+
+定理 \ref{thm1} 提供给我们一个新的角度来理解互信息。互信息用于描述随机变量的不确定性，一般也理解为用于度量随机变量边际熵之间的重合部分，而 Copula 熵指出了这种理解的错误性。由于 Copula 和边际的独立性，当 MI 看成 Copula 熵表示时，很明显它应该理解为边际熵的核心部分，而非重叠部分。Copula 熵对 MI 的刻画加深了对于随机变量不确定性的理解。
+
+与此同时，通过定理 \ref{thm2} Copula 熵还刻画了与熵，边际熵三者之间的关系。
+\begin{theorem}
+	\label{thm2}
+	联合随机变量的熵由其边际熵和 Copula 熵组成，即
+	\begin{equation}
+		H(x) = \sum\limits_{i=1}^N H(x_i) + H_c(x) 
+	\end{equation}
+\end{theorem}
+
+该定理描述了联合熵和边际熵之间的关系。
+
+
+\section{变量选择方法问题}
+变量选择问题是机器学习和统计学领域中一个非常古老而被广泛研究的问题。当我们用模型去拟合因变量和自变量时，往往会发现在一定的准则下，只有一部分的自变量与因变量相关。而变量选择问题便是研究如何准确地选择出这些相关变量。一般而言，选择的标准通常是刻画自变量的预测能力和其对因变量的解释能力。
+\subsection{现存的方法}
+\subsubsection{基于度量的变量选择}
+最简单和广泛使用的变量选择就是通过因变量和自变量之间的统计相关性来进行选择。例如，在线性假定下，我们可以通过计算各 Pearson 相关系数，并设定阈值来进行变量选择。不难发现，该类方法是无模型的，其核心是选择有效的相关性度量。
+
+Sz\'ekely\cite{ref7,ref8} 等人在 2007 和 2009 年的研究中提出了一种非线性的相关性度量：距离相关系数(dCor)。它的定义如下：
+$$
+dCor(X,Y)=\dfrac{\nu^2(X,Y)}{\sqrt{\nu^2(X)\nu^2(Y)}}
+$$
+其中，
+$$
+\nu^2(X,Y;\omega)=||f_{X,Y}(t,s)-f_X(t)f_Y(s)||^2_\omega
+$$
+LI R Z\cite{ref9} 等人在 2012 年的研究中证明了 dCor 作为变量选择工具的可行性。
+
+同样的，GRETTON A\cite{ref10} 和 PRISTER N\cite{ref11} 等人还提出了另一种相关性的度量 HSIC 和 dHISC(多变量下的HSIC)，并由 SONG L\cite{ref12} 证明其作为变量选择工具的可行性。
+\subsubsection*{基于信息准则的逐步回归}
+逐步回归是一种标准的变量选择方法，它最早由 Baron 和 Kenny\cite{ref13} 于 1986 年提出。该方法通常应用于线性回归模型，并且在一定的选择准则下，一次只能进行一个自变量的选择与取舍。关于选择的信息准则最常用的有两种分别是 AKAIKE\cite{ref14} 在 1974 年提出的 AIC 准则和 SCHWARZ H.A\cite{ref15} 在 1978 年提出的 BIC 准则。两种准则的一般定义如下：
+\begin{equation}
+\label{eq3}
+\begin{array}{l}
+	AIC = 2k+n\ln(\dfrac{SSR}{n})\\
+	BIC = k\ln(n)+n\ln(\dfrac{SSR}{n})
+\end{array}
+\end{equation}
+其中，$n$ 为样本数量，$k$ 为模型参数个数，$SSR$ 为残差平方和。
+
+两种准则都对模型的变量个数进行惩罚，从公式\ref{eq3} 的形式分析，相较于AIC 从而在模型拟合的优度和过拟合间进行平衡。但对于不同的选择标准，可能出现完全不一样的变量选择结果。
+
+\subsubsection*{LASSO 回归}
+LASSO 回归是 1996 年由 Roebert Tibshirani\cite{ref16} 首次提出的一种变量选择方法。它实际上是一种压缩估计，通过构造一个惩罚函数压缩一些回归系数为 0，从而得到一个较为精炼的模型，从而达到变量选择的目的。之后，Zou\cite{ref17} 在 2006 年的研究中指出 LASSO 回归不具有全局性质，从而发展出了调整的 LASSO。于此同时，通过对惩罚函数的调整与定义，FAN\cite{ref18} 等人相继提出了 SCAD 等新的变量选择方法。
+
+
+\section{基于 Copula 熵进行变量选择}
+2021 年 MA Jian\cite{ref19} 提出了基于 copula 熵的变量选择。相较于上述提到的方法，该方法不需要确定选择标准，不需要模型假设和调整参数。于此同时，它还能在选出正确变量的情况下，保证较高的预测准确性。通过 2011 年 MA\cite{ref6} 提出的 MI 的估计方法，基于 Copula 熵的变量选择方法的计算过程也较为简单。因此，该变量选择在统计学等相关领域中有非常广泛的应用。
+
+MA\cite{ref20} 还开发了实现估计 Coupula 熵和进行变量选择的 R 包：copent，并指出了其在医学等领域上的应用。但在金融经济方面，该方法的使用还没有推广，故希望寻求一组数据来验证其在金融经济数据上使用的可行性。
+
+
+\begin{thebibliography}{99} 
+\bibitem{ref1} Sklar M. Fonctions de repartition an dimensions et leurs marges[J]. Publ. inst. statist. univ. Paris, 1959, 8: 229-231.
+\bibitem{ref2}Davy M, Doucet A. Copulas: a new insight into positive time-frequency distributions[J]. IEEE signal processing letters, 2003, 10(7): 215-218.
+\bibitem{ref3}Cover T M. Elements of information theory[M]. John Wiley \& Sons, 1999.
+\bibitem{ref4}Jenison R L, Reale R A. The shape of neural dependence[J]. Neural computation, 2004, 16(4): 665-672.
+\bibitem{ref5}de la Peña V H, Ibragimov R, Sharakhmetov S. Characterizations of joint distributions, copulas, information, dependence and decoupling, with applications to time series[M]//Optimality. Institute of Mathematical Statistics, 2006: 183-209.
+\bibitem{ref6}Ma J, Sun Z. Mutual information is copula entropy[J]. Tsinghua Science \& Technology, 2011, 16(1): 51-54.
+\bibitem{ref7}Székely G J, Rizzo M L, Bakirov N K. Measuring and testing dependence by correlation of distances[J]. The annals of statistics, 2007, 35(6): 2769-2794.
+\bibitem{ref8}GJ Székely,  Rizzo M L . Brownian distance covariance[J]. Annals of Applied Stats, 2009, 3(4):1236-1265.
+\bibitem{ref9}Li R, Zhong W, Zhu L. Feature screening via distance correlation learning[J]. Journal of the American Statistical Association, 2012, 107(499): 1129-1139.
+\bibitem{ref10}Gretton A, Fukumizu K, Teo C H, et al. A kernel statistical test of independence[C]//Proceedings of the 20th International Conference on Neural Information Processing Systems. 2007: 585-592.
+\bibitem{ref11}Pfister N, Bühlmann P, Schölkopf B, et al. Kernel‐based tests for joint independence[J]. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 2018, 80(1): 5-31.
+\bibitem{ref12} SONG L, SMOLA A, GRETTON A, et al.Feature selection via dependence maximization [J]. J Mach Learn Res, 2012,13: 1393-1434.
+\bibitem{ref13}Baron R M ,  Kenny D A . The moderator-mediator variable distinction in social psychological research: conceptual, strategic, and statistical considerations.[J]. Journal of Personality and Social Psychology, 1999, 51(6):1173.
+\bibitem{ref14}IEEE. A new look at the statistical model identification.[J]. Automatic Control IEEE Transactions on, 1974, 19(6):716-723. 
+\bibitem{ref15}Schwarz G. Estimating the dimension of a model[J]. The annals of statistics, 1978: 461-464.
+\bibitem{ref16} Tibshirani R . Regression shrinkage and selection via the lasso: a retrospective[J]. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 2011, 73(3):267-288.
+\bibitem{ref17}Zou, Hui. The Adaptive Lasso and Its Oracle Properties[J]. Publications of the American Statistical Association, 2006, 101(476):1418-1429.
+\bibitem{ref18} Li F R . Variable Selection via Nonconcave Penalized Likelihood and its Oracle Properties[J]. Publications of the American Statistical Association, 2001, 96(456):1348-1360.
+\bibitem{ref19} Ma J. Variable Selection with Copula Entropy[J]. arXiv preprint arXiv:1910.12389, 2019.
+\bibitem{ref20} Ma J. copent: Estimating Copula Entropy and Transfer Entropy in R[J]. arXiv preprint arXiv:2005.14025, 2020.
+\end{thebibliography}
+\end{document}

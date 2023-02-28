@@ -1,0 +1,47 @@
+\contentsline {section}{\numberline {1}Problem 1. Golf-Sport: Managing Operations }{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Question:}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Solution:}{5}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Notioin Explanation}{5}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Decision Variables}{6}{subsubsection.1.2.2}%
+\contentsline {subsubsection}{\numberline {1.2.3}Objective Function}{6}{subsubsection.1.2.3}%
+\contentsline {subsubsection}{\numberline {1.2.4}Constraints}{7}{subsubsection.1.2.4}%
+\contentsline {subsubsection}{\numberline {1.2.5}Sign Restriction}{9}{subsubsection.1.2.5}%
+\contentsline {subsection}{\numberline {1.3}Result}{9}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Sensitivity Analysis}{11}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}Graphite and Advertising Cash}{11}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}Packing Machine Hours, Assembly Hours and Extra Labor Hours}{12}{subsubsection.1.4.2}%
+\contentsline {subsubsection}{\numberline {1.4.3}Advertising Program}{13}{subsubsection.1.4.3}%
+\contentsline {section}{\numberline {2}Problem 2. Production planning and inventory control}{15}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Question:}{15}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Solution:}{16}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Notioin Explanation}{16}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Decision variables}{16}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}Objective Function of Question (a)}{16}{subsubsection.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.4}Constraints of Question (a)}{17}{subsubsection.2.2.4}%
+\contentsline {subsubsection}{\numberline {2.2.5}Sign Restrictions of Question (a)}{17}{subsubsection.2.2.5}%
+\contentsline {subsubsection}{\numberline {2.2.6}Results of Question (b)}{18}{subsubsection.2.2.6}%
+\contentsline {subsubsection}{\numberline {2.2.7}Objective Function of Question (c)}{18}{subsubsection.2.2.7}%
+\contentsline {subsubsection}{\numberline {2.2.8}Constraints of Question (c)}{19}{subsubsection.2.2.8}%
+\contentsline {subsubsection}{\numberline {2.2.9}Sign Restrictions of Question (c)}{19}{subsubsection.2.2.9}%
+\contentsline {subsubsection}{\numberline {2.2.10}The Resuts of Question (d)}{19}{subsubsection.2.2.10}%
+\contentsline {subsubsection}{\numberline {2.2.11}Some analysis of problem (e)}{20}{subsubsection.2.2.11}%
+\contentsline {section}{\numberline {3}Problem 3. Worker scheduling }{20}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Question}{20}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Solution:}{21}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Notion Explanation}{21}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Objective Function}{21}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Constraints}{21}{subsubsection.3.2.3}%
+\contentsline {subsubsection}{\numberline {3.2.4}Sign Restrictions}{22}{subsubsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.3}Result}{22}{subsection.3.3}%
+\contentsline {section}{\numberline {A}Problem 1}{23}{appendix.a.A}%
+\contentsline {subsection}{\numberline {A. I}LINGO Code}{23}{subsection.a.A.1}%
+\contentsline {subsection}{\numberline {A. II}Solution Report}{27}{subsection.a.A.2}%
+\contentsline {subsection}{\numberline {A. III}Sensitivity Report}{42}{subsection.a.A.3}%
+\contentsline {section}{\numberline {B}Problem 2}{55}{appendix.a.B}%
+\contentsline {subsection}{\numberline {B. I}LINGO Code of Question (a)-(b)}{55}{subsection.a.B.1}%
+\contentsline {subsection}{\numberline {B. II}Result Report of Question (a)-(b)}{56}{subsection.a.B.2}%
+\contentsline {subsection}{\numberline {B. III}LINGO Code of Question (c)-(d)}{59}{subsection.a.B.3}%
+\contentsline {subsection}{\numberline {B. IV}Result Report of Question (c)-(d)}{60}{subsection.a.B.4}%
+\contentsline {section}{\numberline {C}Problem 3}{63}{appendix.a.C}%
+\contentsline {subsection}{\numberline {C. I}LINGO Code}{63}{subsection.a.C.1}%
+\contentsline {subsection}{\numberline {C. II}Solution Report}{63}{subsection.a.C.2}%
