@@ -3,6 +3,7 @@ import numpy as np
 import torch
 from matplotlib_inline import backend_inline
 import matplotlib.pyplot as plt
+from torch.utils import data
 
 def use_svg_display():
     """使用svg格式在Jupyter中显示绘图"""
@@ -92,3 +93,21 @@ def synthetic_data(w, b, num_examples):
     y = torch.matmul(X,w) + b
     y += torch.normal(0,0.01, y.shape)
     return X, y.reshape((-1,1))
+
+def linreg(X, w, b):
+    return torch.matmul(X,w) + b
+
+def squared_loss(y_hat, y):
+    return (y_hat-y.reshape(y_hat.shape))**2 / 2
+
+def sgd(params, lr, batch_size):
+    """小批量随机梯度下降"""
+    with torch.no_grad():
+        for param in params:
+            param -= lr * param.grad / batch_size
+            param.grad.zero_()
+
+def load_array(data_array, batch_size, is_train=True):
+    """构造一个PyTorch数据迭代器"""
+    dataset = data.TensorDataset(*data_array)
+    return data.DataLoader(dataset, batch_size, shuffle=is_train)
