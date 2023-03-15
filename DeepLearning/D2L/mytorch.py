@@ -1,11 +1,15 @@
 import time
+import os
+import hashlib
+import requests
+import zipfile
+import tarfile
 
 import numpy as np
-
-from IPython import display
-
 from matplotlib_inline import backend_inline
 import matplotlib.pyplot as plt
+from IPython import display
+import pandas as pd
 
 import torch
 from torch.utils import data
@@ -14,10 +18,104 @@ import torchvision
 from torchvision import transforms
 
 
+
+DATA_HUB = dict()
+DATA_URL = 'http://d2l-data.s3-accelerate.amazonaws.com/'
+DATA_HUB['kaggle_house_train'] = (  #@save
+    DATA_URL + 'kaggle_house_pred_train.csv',
+    '585e9cc93e70b39160e7921475f9bcd7d31219ce')
+
+DATA_HUB['kaggle_house_test'] = (  #@save
+    DATA_URL + 'kaggle_house_pred_test.csv',
+    'fa19780a7b011d9b009e8bff8e99922a8ee2eb90')
+
+
+
+class Timer:
+    """记录多次运行时间"""
+    def __init__(self):
+        self.times = []
+        self.start()
+    
+    def start(self):
+        """启动计时器"""
+        self.tik = time.time()
+
+    def stop(self):
+        """停止计时器并将时间记录在列表中"""
+        self.times.append(time.time()-self.tik)
+        return self.times[-1]
+    
+    def avg(self):
+        """返回平均时间"""
+        return sum(self.times)/len(self.times)
+    
+    def sum(self):
+        """返回时间总和"""
+        return sum(self.times)
+    
+    def cumsum(self):
+        """返回累计时间"""
+        return np.array(self.times).cumsum().tolist()
+
+class Accumulator:
+    """在n个变量上累加"""
+    def __init__(self, n):
+        self.data = [0.0] * n
+    
+    def add(self,*args):
+        self.data = [a + float(b) for a,b in zip(self.data, args)]
+    
+    def reset(self):
+        self.data = [0.0] * len(self.data)
+    
+    def __getitem__(self, idx):
+        return self.data[idx]
+
+class Animator:
+    """在动画中绘制数据"""
+    def __init__(self,xlabel=None, ylabel=None, legend=None, xlim=None,
+                 ylim=None, xscale='linear', yscale='linear',
+                 fmts=('-','m--','g-','r:'), nrows=1, ncols=1,figsize=(3.5,2.5)):
+        # 增量地绘制多条线
+        if legend is None:
+            legend = []
+        use_svg_display()
+        self.fig, self.axes = plt.subplots(nrows, ncols, figsize=figsize)
+        if nrows*ncols == 1:
+            self.axes = [self.axes, ]
+        # 使用lambda函数捕获参数
+        self.config_axes = lambda: set_axes(
+            self.axes[0], xlabel, ylabel, xlim, ylim, xscale, yscale, legend)
+        self.X, self.Y, self.fmts = None, None, fmts
+
+    def add(self, x, y):
+        # 向图表中添加多个数据点
+        if not hasattr(y, "__len__"):
+            y = [y]
+        n = len(y)
+        if not hasattr(x, "__len__"):
+            x = [x] * n
+        if not self.X:
+            self.X = [[] for _ in range(n)]
+        if not self.Y:
+            self.Y = [[] for _ in range(n)]
+        for i, (a, b) in enumerate(zip(x, y)):
+            if a is not None and b is not None:
+                self.X[i].append(a)
+                self.Y[i].append(b)
+        self.axes[0].cla()
+        for x, y, fmt in zip(self.X, self.Y, self.fmts):
+            self.axes[0].plot(x, y, fmt)
+        self.config_axes()
+        display.display(self.fig)
+        display.clear_output(wait=True)
+
+
+
 def use_svg_display():
     """使用svg格式在Jupyter中显示绘图"""
     backend_inline.set_matplotlib_formats('svg')
-
 
 def set_figsize(figsize=(3.5, 2.5)):
     """设置matplotlib的图表大小"""
@@ -66,35 +164,6 @@ def plot(X, Y=None, xlabel=None, ylabel=None, legend=None, xlim=None,
         else:
             axes.plot(y, fmt)
     set_axes(axes, xlabel, ylabel, xlim, ylim, xscale, yscale, legend)
-
-
-class Timer:
-    """记录多次运行时间"""
-    def __init__(self):
-        self.times = []
-        self.start()
-    
-    def start(self):
-        """启动计时器"""
-        self.tik = time.time()
-
-    def stop(self):
-        """停止计时器并将时间记录在列表中"""
-        self.times.append(time.time()-self.tik)
-        return self.times[-1]
-    
-    def avg(self):
-        """返回平均时间"""
-        return sum(self.times)/len(self.times)
-    
-    def sum(self):
-        """返回时间总和"""
-        return sum(self.times)
-    
-    def cumsum(self):
-        """返回累计时间"""
-        return np.array(self.times).cumsum().tolist()
-    
 
 def synthetic_data(w, b, num_examples):
     """生成y=Xw+b+噪声"""
@@ -178,20 +247,6 @@ def evaluate_accuracy(net, data_iter):
         for X, y in data_iter:
             metric.add(accuracy(net(X), y), y.numel()) # numel():获取tensor中的元素数量
     return metric[0]/metric[1]
-
-class Accumulator:
-    """在n个变量上累加"""
-    def __init__(self, n):
-        self.data = [0.0] * n
-    
-    def add(self,*args):
-        self.data = [a + float(b) for a,b in zip(self.data, args)]
-    
-    def reset(self):
-        self.data = [0.0] * len(self.data)
-    
-    def __getitem__(self, idx):
-        return self.data[idx]
     
 def train_epoch_ch3(net, train_iter, loss, updater):
     """训练模型一个迭代周期"""
@@ -217,45 +272,6 @@ def train_epoch_ch3(net, train_iter, loss, updater):
     # 返回训练损失和训练精度
     return metric[0] / metric[2], metric[1] / metric[2]
 
-class Animator:
-    """在动画中绘制数据"""
-    def __init__(self,xlabel=None, ylabel=None, legend=None, xlim=None,
-                 ylim=None, xscale='linear', yscale='linear',
-                 fmts=('-','m--','g-','r:'), nrows=1, ncols=1,figsize=(3.5,2.5)):
-        # 增量地绘制多条线
-        if legend is None:
-            legend = []
-        use_svg_display()
-        self.fig, self.axes = plt.subplots(nrows, ncols, figsize=figsize)
-        if nrows*ncols == 1:
-            self.axes = [self.axes, ]
-        # 使用lambda函数捕获参数
-        self.config_axes = lambda: set_axes(
-            self.axes[0], xlabel, ylabel, xlim, ylim, xscale, yscale, legend)
-        self.X, self.Y, self.fmts = None, None, fmts
-
-    def add(self, x, y):
-        # 向图表中添加多个数据点
-        if not hasattr(y, "__len__"):
-            y = [y]
-        n = len(y)
-        if not hasattr(x, "__len__"):
-            x = [x] * n
-        if not self.X:
-            self.X = [[] for _ in range(n)]
-        if not self.Y:
-            self.Y = [[] for _ in range(n)]
-        for i, (a, b) in enumerate(zip(x, y)):
-            if a is not None and b is not None:
-                self.X[i].append(a)
-                self.Y[i].append(b)
-        self.axes[0].cla()
-        for x, y, fmt in zip(self.X, self.Y, self.fmts):
-            self.axes[0].plot(x, y, fmt)
-        self.config_axes()
-        display.display(self.fig)
-        display.clear_output(wait=True)
-
 def train_ch3(net, train_iter, test_iter,loss, num_epochs, updater):
     """训练模型"""
     animator = Animator(xlabel='epoch', xlim=[1, num_epochs], ylim=[0.3, 0.9],
@@ -268,7 +284,6 @@ def train_ch3(net, train_iter, test_iter,loss, num_epochs, updater):
     assert train_loss<0.5, train_loss
     assert train_acc<=1 and train_acc>0.7, train_acc
     assert test_acc<=1 and test_acc>0.7, test_acc
-
 
 def predict_ch3(net, test_iter, n=6):
     """预测标签"""
@@ -289,3 +304,44 @@ def evaluate_loss(net, data_iter, loss):
         l = loss(out, y)
         metric.add(l.sum(), l.numel())
     return metric[0] / metric[1]
+
+def download(name, cache_dir=os.path.join('..', 'data')):
+    """下载一个DATA_HUB中的文件，返回本地文件名"""
+    assert name in DATA_HUB, f"{name} 不存在于 {DATA_HUB}"
+    url, sha1_hash = DATA_HUB[name]
+    os.makedirs(cache_dir, exist_ok=True)
+    fname = os.path.join(cache_dir, url.split('/')[-1])
+    if os.path.exists(fname):
+        sha1 = hashlib.sha1()
+        with open(fname, 'rb') as f:
+            while True:
+                data = f.read(1048576)
+                if not data:
+                    break
+                sha1.update(data)
+        if sha1.hexdigest() == sha1_hash:
+            return fname # 命中缓存
+    print(f'正在从{url}下载{fname}...')
+    r = requests.get(url, stream=True, verify=True)
+    with open(fname, 'wb') as f:
+        f.write(r.content)
+    return fname
+    
+def download_extract(name, folder=None):
+    """下载并解压zip/tar文件"""
+    fname = download(name)
+    base_dir = os.path.dirname(fname)
+    data_dir, ext = os.path.splitext(fname)
+    if ext == '.zip':
+        fp = zipfile.ZipFile(fname, 'r')
+    elif ext in ('.tar', '.gz'):
+        fp = tarfile.open(fname, 'r')
+    else:
+        assert False, '只有zip/tar文件可以被解压缩'
+    fp.extractall(base_dir)
+    return os.path.join(base_dir, folder) if folder else data_dir
+
+def download_all():
+    """下载DATA_HUB中的所有文件"""
+    for name in DATA_HUB:
+        download(name)
