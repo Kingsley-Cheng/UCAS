@@ -23,6 +23,7 @@ Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
 Eigen::Matrix4f get_model_matrix(float rotation_angle)
 {
     Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+    model << std::cos(rotation_angle/180*MY_PI), -std::sin(rotation_angle/180*MY_PI), 0, 0, std::sin(rotation_angle/180*MY_PI), std::cos(rotation_angle/180*MY_PI), 0, 0, 0, 0, 1, 0,0,0,0,1;
 
     // TODO: Implement this function
     // Create the model matrix for rotating the triangle around the Z axis.
@@ -37,19 +38,45 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     // Students will implement this function
 
     Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
-
+    float x_near_height = std::tan(eye_fov/360*MY_PI) * zNear *2;
+    float x_near_width = aspect_ratio * x_near_height;
+    float x_far_height = std::tan(eye_fov/360*MY_PI) * zFar *2;
+    float x_far_width = aspect_ratio * x_far_height;
+    Eigen::Matrix4f persp2orth = Eigen::Matrix4f::Identity(); 
+    Eigen::Matrix4f orth = Eigen::Matrix4f::Identity();
+    persp2orth << zNear , 0 , 0 , 0 , 0 , zNear , 0 , 0 , 0 , 0 , zNear+zFar ,-zNear*zFar,0,0,1,0;
+    orth <<2/x_near_width,0,0,0,0,2/x_near_height,0,0,0,0,2/(zFar-zNear),0,0,0,0,1;
+    projection = orth * persp2orth;
     // TODO: Implement this function
     // Create the projection matrix for the given parameters.
     // Then return it.
-
     return projection;
 }
+
+Eigen::Matrix4f get_rotation(Vector3f point, Vector3f axis, float angle)
+{
+    Eigen::Matrix4f move2orign = Eigen::Matrix4f::Identity();
+    Eigen::Matrix4f move2orign_inv = Eigen::Matrix4f::Identity();
+    Eigen::Matrix4f model_axis = Eigen::Matrix4f::Identity();
+    Eigen::Matrix3f N = Eigen::Matrix3f::Identity();
+    move2orign<<1,0,0,-point[0],0,1,0,-point[1],0,0,1,-point[2],0,0,0,1;
+    move2orign_inv<<1,0,0,point[0],0,1,0,point[1],0,0,1,point[2],0,0,0,1;
+    if(axis.norm() !=1)
+        axis = axis / axis.norm();
+    N << 0,-axis[2],axis[1], axis[2], 0, -axis[0], -axis[1], axis[0],0;
+    model_axis.block<3,3>(0,0) = std::cos(angle/180*MY_PI) * Eigen::Matrix3f::Identity()+ (1-std::cos(angle/180*MY_PI))*axis*axis.transpose()+ std::sin(angle/180*MY_PI)*N;
+    return (move2orign_inv * model_axis)* move2orign;
+}
+
 
 int main(int argc, const char** argv)
 {
     float angle = 0;
     bool command_line = false;
     std::string filename = "output.png";
+
+    Eigen::Vector3f axis(1.0f,2.0f,3.0f);
+    Eigen::Vector3f point(1.0f,2.0f,3.0f);
 
     if (argc >= 3) {
         command_line = true;
@@ -78,7 +105,8 @@ int main(int argc, const char** argv)
     if (command_line) {
         r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 
-        r.set_model(get_model_matrix(angle));
+        // r.set_model(get_model_matrix(angle));
+        r.set_model(get_rotation(point, axis, angle));
         r.set_view(get_view_matrix(eye_pos));
         r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
 
@@ -94,7 +122,8 @@ int main(int argc, const char** argv)
     while (key != 27) {
         r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 
-        r.set_model(get_model_matrix(angle));
+        // r.set_model(get_model_matrix(angle));
+        r.set_model(get_rotation(point, axis, angle));
         r.set_view(get_view_matrix(eye_pos));
         r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
 
