@@ -36,7 +36,8 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
                                       float zNear, float zFar)
 {
     // Students will implement this function
-
+    zNear *=-1;
+    zFar *=-1;
     Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
     float x_near_height = std::tan(eye_fov/360*MY_PI) * zNear *2;
     float x_near_width = aspect_ratio * x_near_height;
