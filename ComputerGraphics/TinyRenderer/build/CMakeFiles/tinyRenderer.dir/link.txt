@@ -1,0 +1,1 @@
+/usr/bin/clang++ -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/tinyRenderer.dir/main.cpp.o CMakeFiles/tinyRenderer.dir/tgaimage.cpp.o CMakeFiles/tinyRenderer.dir/model.cpp.o -o tinyRenderer 

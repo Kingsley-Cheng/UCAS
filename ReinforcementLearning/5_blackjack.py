@@ -1,5 +1,7 @@
 import numpy as np
 from tqdm import tqdm
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 class BlackJack:
     def __init__(self):
@@ -13,24 +15,21 @@ class BlackJack:
 
         # player
         self.policy_player = np.zeros(22, dtype=np.int8)
-        self.init_policy_player()
         self.player_sum = 0 # player 手中牌的和
         self.player_useable_ace = False # player 是否使用手中的 ace
         self.player_ace_count = 0 # player 手中 ace 数量
         self.player_trajectory = [] # 记录 player 当局的轨迹
-        
-
 
         # dealer
         self.policy_dealer = np.zeros(22, dtype=np.int8)
-        self.init_policy_dealer()
         self.dealer_card1 = 0 # dealer 初始手中牌一的值
         self.dealer_card2 = 0 # dealer 初始手中牌二的值
         self.dealer_sum = 0 # dealer 手中牌和
         self.dealer_ace_count = 0 # dealer 手中 ace 数量
         self.dealer_ace_useable = False # dealer 是否使用 ACE
 
-        self.init_play()
+        self.init_policy_player()
+        self.init_policy_dealer()
     
     def init_policy_player(self):
         """
@@ -59,23 +58,21 @@ class BlackJack:
         if np.random.randint(1, 0.5) == 1:
             return self.action_strike
         return self.action_hit
-    
-    @classmethod
-    def get_card():
+
+    def get_card(self):
         """
         随机发一张牌，ACE 记为 1
         """
         card_id = np.random.randint(1, 14)
-        return card_id
+        card = min(card_id, 10)
+        return card
     
-    def card_value(card_id):
+    def card_value(self, card_id):
         """
         根据拿到的牌获得对应的价值，将 ACE 默认取值为 11
         """
         if card_id == 1:
             return 11
-        elif card_id > 10:
-            return 10
         else:
             return card_id
         
@@ -174,13 +171,60 @@ class BlackJack:
             
             self.dealer_ace_useable = (1 == self.dealer_ace_count)
 
-            if self.player_sum > self.dealer_sum:
-                return self.state, 1 ,self.player_trajectory
-            elif self.player_sum == self.dealer_sum:
-                return self.state, 0, self.player_trajectory
-            else:
-                return self.state, -1, self.player_trajectory
+        if self.player_sum > self.dealer_sum:
+            return self.state, 1 ,self.player_trajectory
+        elif self.player_sum == self.dealer_sum:
+            return self.state, 0, self.player_trajectory
+        else:
+            return self.state, -1, self.player_trajectory
+            
+    def play_eposide(self, init_action=None, init_state = None):
+        self.state = []
 
+        # player
+        self.player_sum = 0 # player 手中牌的和
+        self.player_useable_ace = False # player 是否使用手中的 ace
+        self.player_ace_count = 0 # player 手中 ace 数量
+        self.player_trajectory = [] # 记录 player 当局的轨迹
+
+        # dealer
+        self.dealer_card1 = 0 # dealer 初始手中牌一的值
+        self.dealer_card2 = 0 # dealer 初始手中牌二的值
+        self.dealer_sum = 0 # dealer 手中牌和
+        self.dealer_ace_count = 0 # dealer 手中 ace 数量
+        self.dealer_ace_useable = False # dealer 是否使用 ACE
+        self.init_play(initial_state=init_state)
+        return self.play(init_action=init_action)
+
+def MonteCarlo_OnPolicy(env, epsiodes):
+    states_useable_ace = np.zeros((10, 10))
+    states_useable_ace_count = np.ones((10, 10))
+    states_no_useable_ace = np.zeros((10, 10))
+    states_no_useable_ace_count = np.ones((10, 10))
+    for i in tqdm(range(epsiodes)):
+        result = env.play_eposide()
+        print(result)
+        print("\n\n\n")
+        reward, player_trajectory = result[1], result[2] 
+        for (useable_ace, player_sum, dealer_card), _ in player_trajectory:
+            player_sum -= 12
+            dealer_card -= 1
+            if useable_ace:
+                states_useable_ace[player_sum, dealer_card] += reward
+                states_useable_ace_count[player_sum, dealer_card] += 1
+            else:
+                states_no_useable_ace[player_sum, dealer_card] += reward
+                states_no_useable_ace_count[player_sum, dealer_card] += 1
+    return states_useable_ace / states_useable_ace_count, states_no_useable_ace / states_no_useable_ace_count
+
+
+if __name__ == "__main__":
+    env = BlackJack()
+    r1, r2 = MonteCarlo_OnPolicy(env, 10000)
+    sns.heatmap(r1)
+    plt.show()
+    print(r1)
+    print(r2)
         
 
         
