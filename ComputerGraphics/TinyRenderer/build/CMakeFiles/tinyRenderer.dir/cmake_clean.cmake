@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/tinyRenderer.dir/geometry.cpp.o"
+  "CMakeFiles/tinyRenderer.dir/geometry.cpp.o.d"
   "CMakeFiles/tinyRenderer.dir/main.cpp.o"
   "CMakeFiles/tinyRenderer.dir/main.cpp.o.d"
   "CMakeFiles/tinyRenderer.dir/model.cpp.o"

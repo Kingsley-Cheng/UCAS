@@ -13,5 +13,10 @@
   "directory": "/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/build",
   "command": "/usr/bin/clang++   -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -o CMakeFiles/tinyRenderer.dir/model.cpp.o -c /Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/model.cpp",
   "file": "/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/model.cpp"
+},
+{
+  "directory": "/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/build",
+  "command": "/usr/bin/clang++   -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -o CMakeFiles/tinyRenderer.dir/geometry.cpp.o -c /Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/geometry.cpp",
+  "file": "/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/geometry.cpp"
 }
 ]

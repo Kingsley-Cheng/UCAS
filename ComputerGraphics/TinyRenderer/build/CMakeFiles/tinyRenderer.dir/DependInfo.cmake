@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/geometry.cpp" "CMakeFiles/tinyRenderer.dir/geometry.cpp.o" "gcc" "CMakeFiles/tinyRenderer.dir/geometry.cpp.o.d"
   "/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/main.cpp" "CMakeFiles/tinyRenderer.dir/main.cpp.o" "gcc" "CMakeFiles/tinyRenderer.dir/main.cpp.o.d"
   "/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/model.cpp" "CMakeFiles/tinyRenderer.dir/model.cpp.o" "gcc" "CMakeFiles/tinyRenderer.dir/model.cpp.o.d"
   "/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/tgaimage.cpp" "CMakeFiles/tinyRenderer.dir/tgaimage.cpp.o" "gcc" "CMakeFiles/tinyRenderer.dir/tgaimage.cpp.o.d"

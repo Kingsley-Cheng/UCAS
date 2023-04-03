@@ -426,4 +426,5 @@ CMakeFiles/tinyRenderer.dir/model.cpp.o: \
   /Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/geometry.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/cmath \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/math.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/math.h
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/math.h \
+  /Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/TinyRenderer/tgaimage.h

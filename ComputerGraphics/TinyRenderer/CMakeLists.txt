@@ -4,7 +4,7 @@ project(tinyRenderer VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_executable(tinyRenderer main.cpp tgaimage.cpp tgaimage.h model.h model.cpp geometry.h)
+add_executable(tinyRenderer main.cpp tgaimage.cpp tgaimage.h model.h model.cpp geometry.h geometry.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
