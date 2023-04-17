@@ -2,7 +2,7 @@
 
 Date : 2023-03-14 12:02:18
 
-Directory /Users/kingsleycheng/Documents/github/UCAS/DeepLearning/D2L
+Directory /Users/kingsleycheng/Documents/github/UCAS/DeepLearning/mytorch
 
 Total : 5 files,  884 codes, 14 comments, 25 blanks, all 923 lines
 

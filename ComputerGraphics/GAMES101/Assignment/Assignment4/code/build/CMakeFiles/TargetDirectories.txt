@@ -1,0 +1,3 @@
+/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/GAMES101/Assignment4/code/build/CMakeFiles/BezierCurve.dir
+/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/GAMES101/Assignment4/code/build/CMakeFiles/edit_cache.dir
+/Users/kingsleycheng/Documents/github/UCAS/ComputerGraphics/GAMES101/Assignment4/code/build/CMakeFiles/rebuild_cache.dir
